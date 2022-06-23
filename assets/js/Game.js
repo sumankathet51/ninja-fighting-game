@@ -31,8 +31,12 @@ class Game {
                     key: "d",
                     pressed: false,
                 },
+                attack: {
+                    key: "f",
+                    pressed: false,
+                },
             },
-            characters[0]
+            characters.character1
         );
         this.player1.initialize();
         // Player 2
@@ -63,8 +67,13 @@ class Game {
                     key: "ArrowRight",
                     pressed: false,
                 },
+                attack: {
+                    key: "1",
+                    pressed: false,
+                },
             },
-            characters[1]
+            characters.character2,
+            true
         );
         this.player2.initialize();
         // Background Image
@@ -87,49 +96,58 @@ class Game {
 
     addEvents() {
         window.addEventListener("keydown", (event) => {
-            setKeyPressed(event.key, this.player1);
-            setKeyPressed(event.key, this.player2);
-            // switch (event.key) {
-            //     case player1.keys.up.key:
-            //         player1.keys.up.pressed = true;
-            //         player1.lastKey = player1.keys.up.key;
-            //         break;
+            // setKeyPressed(event.key, this.player1);
+            // setKeyPressed(event.key, this.player2);
+            switch (event.key) {
+                case this.player1.keys.up.key:
+                    this.player1.keys.up.pressed = true;
+                    // this.player1.lastKey = this.player1.keys.up.key;
+                    break;
 
-            //     case player1.keys.bottom.key:
-            //         player1.keys.bottom.pressed = true;
-            //         player1.lastKey = player1.keys.bottom.key;
-            //         break;
+                case this.player1.keys.bottom.key:
+                    this.player1.keys.bottom.pressed = true;
+                    this.player1.lastKey = this.player1.keys.bottom.key;
+                    break;
 
-            //     case player1.keys.left.key:
-            //         player1.keys.left.pressed = true;
-            //         player1.lastKey = player1.keys.left.key;
-            //         break;
+                case this.player1.keys.left.key:
+                    this.player1.keys.left.pressed = true;
+                    this.player1.lastKey = this.player1.keys.left.key;
+                    break;
 
-            //     case player1.keys.right.key:
-            //         player1.keys.right.pressed = true;
-            //         player1.lastKey = player1.keys.right.key;
-            //         break;
+                case this.player1.keys.right.key:
+                    this.player1.keys.right.pressed = true;
+                    this.player1.lastKey = this.player1.keys.right.key;
+                    break;
 
-            //     case player2.keys.up.key:
-            //         player2.keys.up.pressed = true;
-            //         player2.lastKey = player2.keys.up.key;
-            //         break;
+                case this.player1.keys.attack.key:
+                    this.player1.keys.attack.pressed = true;
 
-            //     case player2.keys.bottom.key:
-            //         player2.keys.bottom.pressed = true;
-            //         player2.lastKey = player2.keys.bottom.key;
-            //         break;
+                    break;
 
-            //     case player2.keys.left.key:
-            //         player2.keys.left.pressed = true;
-            //         player2.lastKey = player2.keys.left.key;
-            //         break;
+                case this.player2.keys.up.key:
+                    this.player2.keys.up.pressed = true;
+                    this.player2.lastKey = this.player2.keys.up.key;
+                    break;
 
-            //     case player2.keys.right.key:
-            //         player2.keys.right.pressed = true;
-            //         player2.lastKey = player2.keys.right.key;
-            //         break;
-            // }
+                case this.player2.keys.bottom.key:
+                    this.player2.keys.bottom.pressed = true;
+                    this.player2.lastKey = this.player2.keys.bottom.key;
+                    break;
+
+                case this.player2.keys.left.key:
+                    this.player2.keys.left.pressed = true;
+                    this.player2.lastKey = this.player2.keys.left.key;
+                    break;
+
+                case this.player2.keys.right.key:
+                    this.player2.keys.right.pressed = true;
+                    this.player2.lastKey = this.player2.keys.right.key;
+                    break;
+
+                case this.player2.keys.attack.key:
+                    this.player2.keys.attack.pressed = true;
+                    break;
+            }
         });
 
         window.addEventListener("keyup", (event) => {
@@ -151,6 +169,10 @@ class Game {
                     this.player1.keys.right.pressed = false;
                     break;
 
+                case this.player1.keys.attack.key:
+                    this.player1.keys.attack.pressed = false;
+                    break;
+
                 case this.player2.keys.up.key:
                     this.player2.keys.up.pressed = false;
                     break;
@@ -165,6 +187,10 @@ class Game {
 
                 case this.player2.keys.right.key:
                     this.player2.keys.right.pressed = false;
+                    break;
+
+                case this.player2.keys.attack.key:
+                    this.player2.keys.attack.pressed = false;
                     break;
             }
         });

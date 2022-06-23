@@ -12,18 +12,28 @@ const keys = {
     s: "down",
     a: "left",
     d: "right",
+    f: "fight",
     ArrowUp: "up",
     ArrowDown: "down",
     ArrowLeft: "left",
     ArrowRight: "right",
+    1: "fight",
 };
 
-const characters = [
-    "./images/haku_kale/ninja_stand.png",
-    "./images/pandu/ninja_stand.png",
-    "./images/sundari/ninja.png",
-    "./images/sikaru_maila/ninja.png",
-];
+const characters = {
+    character1: {
+        stand: "./images/haku_kale/ninja_stand.png",
+        walk: "./images/haku_kale/ninja_run.png",
+        hit: "./images/haku_kale/ninja_hit.png",
+        attack: "./images/haku_kale/ninja_attack.png",
+    },
+    character2: {
+        stand: "./images/pandu/ninja_stand.png",
+        walk: "./images/pandu/ninja_run.png",
+        hit: "./images/pandu/ninja_hit.png",
+        attack: "./images/pandu/ninja_attack.png",
+    },
+};
 
 const backgroundImages = ["./images/bg_1.jpg"];
 

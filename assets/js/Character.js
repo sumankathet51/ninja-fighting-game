@@ -7,7 +7,8 @@ export default class Character {
         height,
         width,
         keys,
-        character
+        character,
+        invert = false
     ) {
         this.position = position;
         this.velocity = velocity;
@@ -15,11 +16,11 @@ export default class Character {
         this.width = width;
         this.keys = keys;
         this.lastKey;
-        this.character = new Image();
-        this.character.src = character;
+        this.character = character;
+        this.image = new Image();
+        this.image.src = character.stand;
         this.standingPositions = [
             new Vector({ x: 76, y: 12 }),
-            // new Vector({ x: 249, y: 20 }),
             new Vector({ x: 400, y: 12 }),
             new Vector({ x: 561, y: 12 }),
             new Vector({ x: 76, y: 175 }),
@@ -31,23 +32,37 @@ export default class Character {
         ];
         this.currentFrame = 0;
         this.framesElapsed = 0;
-        this.framesHold = 10;
+        this.framesHold = 5;
         this.increaseFrame = true;
         this.maxFrames = 9;
+        this.invert = invert;
+        // this.is_attacking = false;
+        // console.log(this.width);
     }
 
     draw() {
+        // context.clearRect(0, 0, canvas.width, canvas.height);
+        // context.save();
+        // context.translate(canvas.width, canvas.height);
+        // context.rotate((180 * Math.PI) / 180);
+        if (this.invert) {
+            context.save();
+            context.scale(-1, 1);
+        }
         context.drawImage(
-            this.character,
+            this.image,
             this.standingPositions[this.currentFrame].x,
             this.standingPositions[this.currentFrame].y,
             this.width,
             this.height,
-            this.position.x,
+            this.invert ? (this.position.x + this.width) * -1 : this.position.x,
+            // this.position.x,
             this.position.y,
             this.width,
             this.height
         );
+        if (this.invert) context.restore();
+        // context.restore();
     }
 
     animateFrames() {
@@ -91,23 +106,43 @@ export default class Character {
             this.position.x + this.velocity.x > 0
         ) {
             this.velocity.x = -5;
+            this.image.src = this.character.walk;
+            this.invert = true;
         } else if (
             this.keys.right.pressed === true &&
             this.lastKey === this.keys.right.key &&
             this.position.x + this.velocity.x + this.width < canvas.width
         ) {
+            this.image.src = this.character.walk;
             this.velocity.x = 5;
-        }
-
-        if (
+            this.invert = false;
+        } else if (
             this.keys.up.pressed === true &&
-            this.position.y + this.velocity.y - this.height >= 0 &&
+            // this.position.y + this.velocity.y - this.height >= 0 &&
             this.position.y + this.height + this.velocity.y >= canvas.height
         ) {
             this.velocity.y = -20;
             this.position.y += this.velocity.y;
+        } else {
+            this.image.src = this.character.stand;
+        }
+
+        if (this.keys.attack.pressed === true) {
+            this.image.src = this.character.attack;
+
+            // this.attack();
+            // this.framesHold = 2;
         }
 
         this.position.x += this.velocity.x;
+    }
+
+    attack() {
+        this.image.src = this.character.attack;
+        this.framesHold = 2;
+    }
+
+    attackFinished() {
+        this.framesHold = 5;
     }
 }
