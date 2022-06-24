@@ -34,7 +34,7 @@ export default class Game {
                 y: 0,
             }),
             86,
-            61,
+            65,
             keys.character2,
             characters.character2,
             true
@@ -63,15 +63,45 @@ export default class Game {
 
     /** Animate Players */
     animate() {
-        // context.fillStyle = "black";
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(this.bgImage, 0, 0);
-        // console.log(this.bgImage);
+        if (
+            this.player1.isAttacking &&
+            this.player1.attackBox.position.x <
+            this.player2.position.x + this.player2.width &&
+            Math.abs(this.player2.attackBox.position.x) +
+            this.player1.attackBox.width >
+            this.player2.position.x &&
+            this.player1.attackBox.position.y <
+            this.player2.position.y + this.player2.height &&
+            this.player1.attackBox.height + this.player1.attackBox.position.y >
+            this.player2.position.y
+        ) {
+            if (!this.player1.collision) {
+                this.player1.collision = true;
+                this.player2.takeHit();
+            }
+        }
 
-        // context.fillStyle = "red";
+        if (
+            this.player2.isAttacking &&
+            this.player2.attackBox.position.x <
+            this.player1.position.x + this.player1.width &&
+            Math.abs(this.player2.attackBox.position.x) +
+            this.player2.attackBox.width >
+            this.player1.position.x &&
+            this.player2.attackBox.position.y <
+            this.player1.position.y + this.player1.height &&
+            this.player2.attackBox.height + this.player2.attackBox.position.y >
+            this.player1.position.y
+        ) {
+            if (!this.player2.collision) {
+                this.player2.collision = true;
+                this.player1.takeHit();
+            }
+        }
+        context.drawImage(this.bgImage, 0, 0);
+
         this.player1.update();
 
-        // context.fillStyle = "blue";
         this.player2.update();
 
         requestAnimationFrame(() => this.animate());

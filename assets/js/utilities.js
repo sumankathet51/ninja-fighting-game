@@ -6,7 +6,7 @@ export function setKeyPressed(eventKey, player1, player2) {
 
         case player1.keys.down.key:
             player1.keys.down.pressed = true;
-            player1.lastKey = player1.keys.bottom.key;
+            player1.lastKey = player1.keys.down.key;
             break;
 
         case player1.keys.left.key:
@@ -91,4 +91,8 @@ export function unsetKeyPressed(eventKey, player1, player2) {
             player2.keys.attack.pressed = false;
             break;
     }
+}
+
+export function secondsToMiliseconds(seconds) {
+    return seconds * 1000;
 }

@@ -1,4 +1,5 @@
-import { canvas, context, GRAVITY } from "./constants.js";
+import { canvas, context, DEFAULT_FPS, GRAVITY } from "./constants.js";
+import { secondsToMiliseconds } from "./utilities.js";
 import Vector from "./Vector.js";
 
 /** Class Representating a character iof the Game */
@@ -22,42 +23,23 @@ export default class Character {
         character,
         isFlipped = false
     ) {
-        /**
-         * @type {Vector}
-         */
         this.position = position;
-        /**
-         * @type {Vector}
-         */
+
         this.velocity = velocity;
-        /**
-         * @type {number}
-         */
+
         this.height = height;
-        /**
-         * @type {number}
-         */
+
         this.width = width;
-        /**
-         * @type {object}
-         */
+
         this.keys = keys;
-        /**
-         * @type {boolean}
-         */
+
         this.lastKey;
-        /**
-         * @type {object}
-         */
+
         this.character = character;
-        /**
-         * @type {Image}
-         */
+
         this.image = new Image();
         this.image.src = character.stand;
-        /**
-         * @type {Array}
-         */
+
         this.standingPositions = [
             new Vector({ x: 76, y: 12 }),
             new Vector({ x: 400, y: 12 }),
@@ -69,48 +51,55 @@ export default class Character {
             new Vector({ x: 238, y: 336 }),
             new Vector({ x: 400, y: 336 }),
         ];
-        /**
-         * @type {number}
-         */
+
         this.currentFrame = 0;
-        /**
-         * @type {number}
-         */
+
         this.framesElapsed = 0;
-        /**
-         * @type {number}
-         */
+
         this.framesHold = 5;
-        /**
-         * @type {boolean}
-         */
+
         this.increaseFrame = true;
-        /**
-         * @type {number}
-         */
+
         this.maxFrames = 9;
-        /**
-         * @type {boolean}
-         */
+
         this.isFlipped = isFlipped;
-        /**
-         * @type {boolean}
-         */
-        this.is_attacking = false;
+
+        this.isAttacking = false;
+
+        this.attackBox = {
+            offset: {
+                x: 25,
+                y: 25,
+            },
+            position: {
+                x: this.position.x,
+                y: this.position.y,
+            },
+            width: 50,
+            height: 50,
+        };
+
+        this.health = 100;
+
+        this.collision = false;
     }
 
     /**
      * Draws the character in the canvas
      */
     draw() {
-        // context.clearRect(0, 0, canvas.width, canvas.height);
-        // context.save();
-        // context.translate(canvas.width, canvas.height);
-        // context.rotate((180 * Math.PI) / 180);
         if (this.isFlipped) {
             context.save();
             context.scale(-1, 1);
+
+            this.attackBox.position.x =
+                (this.position.x + this.width) * -1 + this.attackBox.offset.x;
+            this.attackBox.position.y = this.position.y + this.attackBox.offset.y;
+        } else {
+            this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
+            this.attackBox.position.y = this.position.y + this.attackBox.offset.y;
         }
+        // );
         context.drawImage(
             this.image,
             this.standingPositions[this.currentFrame].x,
@@ -118,12 +107,13 @@ export default class Character {
             this.width,
             this.height,
             this.isFlipped ? (this.position.x + this.width) * -1 : this.position.x,
-            // this.position.x,
             this.position.y,
             this.width,
             this.height
         );
+
         if (this.isFlipped) context.restore();
+
         // context.restore();
     }
 
@@ -137,7 +127,7 @@ export default class Character {
                     this.increaseFrame = false;
                 }
             } else {
-                this.currentFrame--;
+                if (this.currentFrame > 0) this.currentFrame--;
                 if (this.currentFrame <= 0) {
                     this.increaseFrame = true;
                 }
@@ -145,7 +135,6 @@ export default class Character {
             //  % this.maxFrames;
             this.framesElapsed = 0;
         }
-        // console.log(this.framesElapsed);
     }
 
     /** Initialize the character */
@@ -157,7 +146,6 @@ export default class Character {
     update() {
         this.draw();
         this.animateFrames();
-
         this.position.y += this.velocity.y;
         if (this.position.y + this.height + this.velocity.y >= canvas.height)
             this.velocity.y = 0;
@@ -171,18 +159,18 @@ export default class Character {
             this.position.x + this.velocity.x > 0
         ) {
             this.velocity.x = -5;
-            this.image.src = this.character.walk;
+            if (!this.isAttacking) this.image.src = this.character.walk;
             this.isFlipped = true;
         } else if (
             this.keys.right.pressed === true &&
             this.lastKey === this.keys.right.key &&
             this.position.x + this.velocity.x + this.width < canvas.width
         ) {
-            this.image.src = this.character.walk;
+            if (!this.isAttacking) this.image.src = this.character.walk;
             this.velocity.x = 5;
             this.isFlipped = false;
         } else {
-            this.image.src = this.character.stand;
+            if (!this.isAttacking) this.image.src = this.character.stand;
         }
 
         if (
@@ -195,17 +183,27 @@ export default class Character {
 
         if (this.keys.attack.pressed === true) {
             // this.image.src = this.character.attack;
-
-            this.attack();
+            if (!this.isAttacking) this.attack();
             // this.framesHold = 2;
         }
-
+        // console.log(this.collision);
         this.position.x += this.velocity.x;
     }
 
     /** Handle character attack */
     attack() {
+        this.currentFrame = 0;
+        this.isAttacking = true;
+        setTimeout(() => {
+            this.collision = false;
+            this.isAttacking = false;
+            this.currentFrame = 0;
+        }, (secondsToMiliseconds(1) / (DEFAULT_FPS / this.framesHold)) * this.maxFrames);
         this.image.src = this.character.attack;
-        // this.framesHold = 2;
+    }
+
+    takeHit() {
+        if (this.health > 0) this.health -= 10;
+        console.log(this.health);
     }
 }

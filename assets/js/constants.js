@@ -96,3 +96,5 @@ export const backgroundImages = ["./images/bg_1.jpg"];
  * @const {number} - Holds the total number of frames
  */
 export const TOTAL_FRAMES = 9;
+
+export const DEFAULT_FPS = 60;
