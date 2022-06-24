@@ -1,8 +1,12 @@
 import Character from "./character.js";
 import Vector from "./Vector.js";
-import setKeyPressed from "./utilities.js";
+import { setKeyPressed, unsetKeyPressed } from "./utilities.js";
+import { backgroundImages, characters, context, keys } from "./constants.js";
 
-class Game {
+export default class Game {
+    /**
+     * Initiliaze the game
+     */
     initialize() {
         this.player1 = new Character(
             new Vector({
@@ -14,28 +18,8 @@ class Game {
                 y: 0,
             }),
             86,
-            75, {
-                up: {
-                    key: "w",
-                    pressed: false,
-                },
-                bottom: {
-                    key: "s",
-                    pressed: false,
-                },
-                left: {
-                    key: "a",
-                    pressed: false,
-                },
-                right: {
-                    key: "d",
-                    pressed: false,
-                },
-                attack: {
-                    key: "f",
-                    pressed: false,
-                },
-            },
+            75,
+            keys.character1,
             characters.character1
         );
         this.player1.initialize();
@@ -50,28 +34,8 @@ class Game {
                 y: 0,
             }),
             86,
-            61, {
-                up: {
-                    key: "ArrowUp",
-                    pressed: false,
-                },
-                bottom: {
-                    key: "ArrowBottom",
-                    pressed: false,
-                },
-                left: {
-                    key: "ArrowLeft",
-                    pressed: false,
-                },
-                right: {
-                    key: "ArrowRight",
-                    pressed: false,
-                },
-                attack: {
-                    key: "1",
-                    pressed: false,
-                },
-            },
+            61,
+            keys.character2,
             characters.character2,
             true
         );
@@ -82,120 +46,22 @@ class Game {
 
         this.addEvents();
         this.animate();
-
-        // this.draw();
     }
 
-    // draw() {
-    //     this.bgImage = new Image();
-    //     this.bgImage.addEventListener("load", () => {
-    //     });
-
-    //     console.log(this.bgImage);
-    // }
-
+    /**
+     * Add keyboard events
+     */
     addEvents() {
         window.addEventListener("keydown", (event) => {
-            // setKeyPressed(event.key, this.player1);
-            // setKeyPressed(event.key, this.player2);
-            switch (event.key) {
-                case this.player1.keys.up.key:
-                    this.player1.keys.up.pressed = true;
-                    // this.player1.lastKey = this.player1.keys.up.key;
-                    break;
-
-                case this.player1.keys.bottom.key:
-                    this.player1.keys.bottom.pressed = true;
-                    this.player1.lastKey = this.player1.keys.bottom.key;
-                    break;
-
-                case this.player1.keys.left.key:
-                    this.player1.keys.left.pressed = true;
-                    this.player1.lastKey = this.player1.keys.left.key;
-                    break;
-
-                case this.player1.keys.right.key:
-                    this.player1.keys.right.pressed = true;
-                    this.player1.lastKey = this.player1.keys.right.key;
-                    break;
-
-                case this.player1.keys.attack.key:
-                    this.player1.keys.attack.pressed = true;
-
-                    break;
-
-                case this.player2.keys.up.key:
-                    this.player2.keys.up.pressed = true;
-                    this.player2.lastKey = this.player2.keys.up.key;
-                    break;
-
-                case this.player2.keys.bottom.key:
-                    this.player2.keys.bottom.pressed = true;
-                    this.player2.lastKey = this.player2.keys.bottom.key;
-                    break;
-
-                case this.player2.keys.left.key:
-                    this.player2.keys.left.pressed = true;
-                    this.player2.lastKey = this.player2.keys.left.key;
-                    break;
-
-                case this.player2.keys.right.key:
-                    this.player2.keys.right.pressed = true;
-                    this.player2.lastKey = this.player2.keys.right.key;
-                    break;
-
-                case this.player2.keys.attack.key:
-                    this.player2.keys.attack.pressed = true;
-                    break;
-            }
+            setKeyPressed(event.key, this.player1, this.player2);
         });
 
         window.addEventListener("keyup", (event) => {
-            switch (event.key) {
-                case this.player1.keys.up.key:
-                    this.player1.keys.up.pressed = false;
-                    break;
-
-                case this.player1.keys.bottom.key:
-                    this.player1.keys.bottom.pressed = false;
-                    break;
-
-                case this.player1.keys.left.key:
-                    this.player1.keys.left.pressed = false;
-
-                    break;
-
-                case this.player1.keys.right.key:
-                    this.player1.keys.right.pressed = false;
-                    break;
-
-                case this.player1.keys.attack.key:
-                    this.player1.keys.attack.pressed = false;
-                    break;
-
-                case this.player2.keys.up.key:
-                    this.player2.keys.up.pressed = false;
-                    break;
-
-                case this.player2.keys.bottom.key:
-                    this.player2.keys.bottom.pressed = false;
-                    break;
-
-                case this.player2.keys.left.key:
-                    this.player2.keys.left.pressed = false;
-                    break;
-
-                case this.player2.keys.right.key:
-                    this.player2.keys.right.pressed = false;
-                    break;
-
-                case this.player2.keys.attack.key:
-                    this.player2.keys.attack.pressed = false;
-                    break;
-            }
+            unsetKeyPressed(event.key, this.player1, this.player2);
         });
     }
 
+    /** Animate Players */
     animate() {
         // context.fillStyle = "black";
         context.fillRect(0, 0, canvas.width, canvas.height);
@@ -211,6 +77,3 @@ class Game {
         requestAnimationFrame(() => this.animate());
     }
 }
-
-const game = new Game();
-game.initialize();
