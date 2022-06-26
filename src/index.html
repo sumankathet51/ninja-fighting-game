@@ -6,13 +6,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ninja Fighter</title>
+    <link rel="stylesheet" href="/css/resets.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/utilities.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div class="container">
-        <canvas id="canvas"></canvas>
 
+        <div class="healthbar">
+            <div class="healthbar__totalHealth border-white-5 br-none">
+                <div class="healthbar__availableHealth"></div>
+            </div>
+
+            <div class="timer border-white-5 ">
+                <span id="time">60</span>
+            </div>
+
+            <div class="healthbar__totalHealth border-white-5 bl-none">
+                <div class="healthbar__availableHealth"></div>
+            </div>
+        </div>
+
+        <div class="winner">
+            <p> Game Over </p>
+            <p class="text-center" id="winner__Declaration"></p>
+        </div>
+        <canvas id="canvas"></canvas>
     </div>
 
     <!-- <script src="/js/constants.js"></script>

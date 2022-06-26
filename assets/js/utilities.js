@@ -1,3 +1,42 @@
+import Character from "./character.js";
+import {
+    CURRENT_TIME,
+    WINNER_CONTAINER,
+    WINNER_STATEMENT,
+} from "./constants.js";
+
+/**
+ *
+ * @param {number} health - Total health of the player
+ * @param {object} element - Health indicator element in the DOM
+ */
+export function updateHealth(health, element) {
+    element.style.width = health + "%";
+}
+
+/**
+ *
+ * @param {number} time - Remaining Time
+ */
+export function setTime(time) {
+    CURRENT_TIME.innerText = time;
+}
+
+/**
+ *
+ * @param {string} winner - Current Winner text
+ */
+export function displayWinner(winner) {
+    WINNER_CONTAINER.style.display = "block";
+    WINNER_STATEMENT.innerText = winner;
+}
+
+/**
+ *
+ * @param {string} eventKey - Key that was pressed
+ * @param {Character} player1 - Player1 Object
+ * @param {Character} player2 - Player2 Object
+ */
 export function setKeyPressed(eventKey, player1, player2) {
     switch (eventKey) {
         case player1.keys.up.key:
@@ -48,6 +87,12 @@ export function setKeyPressed(eventKey, player1, player2) {
     }
 }
 
+/**
+ *
+ * @param {string} eventKey - Key that was pressed
+ * @param {Character} player1 - Player1 Object
+ * @param {Character} player2 - Player2 Object
+ */
 export function unsetKeyPressed(eventKey, player1, player2) {
     switch (eventKey) {
         case player1.keys.up.key:

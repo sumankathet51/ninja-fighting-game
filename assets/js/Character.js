@@ -1,5 +1,14 @@
-import { canvas, context, DEFAULT_FPS, GRAVITY } from "./constants.js";
-import { secondsToMiliseconds } from "./utilities.js";
+import {
+    bloodAnimation,
+    bloodSpriteCoordinates,
+    bloodSpriteHeight,
+    bloodSpritewidth,
+    canvas,
+    context,
+    DEFAULT_FPS,
+    GRAVITY,
+} from "./constants.js";
+import { secondsToMiliseconds, updateHealth } from "./utilities.js";
 import Vector from "./Vector.js";
 
 /** Class Representating a character iof the Game */
@@ -21,7 +30,8 @@ export default class Character {
         width,
         keys,
         character,
-        isFlipped = false
+        isFlipped = false,
+        healthElement
     ) {
         this.position = position;
 
@@ -37,10 +47,9 @@ export default class Character {
 
         this.character = character;
 
-        this.image = new Image();
-        this.image.src = character.stand;
+        this.image = character.stand;
 
-        this.standingPositions = [
+        this.positions = [
             new Vector({ x: 76, y: 12 }),
             new Vector({ x: 400, y: 12 }),
             new Vector({ x: 561, y: 12 }),
@@ -50,6 +59,18 @@ export default class Character {
             new Vector({ x: 76, y: 336 }),
             new Vector({ x: 238, y: 336 }),
             new Vector({ x: 400, y: 336 }),
+        ];
+
+        this.deadPositions = [
+            new Vector({ x: 90, y: 20 }),
+            new Vector({ x: 400, y: 24 }),
+            new Vector({ x: 530, y: 42 }),
+            new Vector({ x: 87, y: 182 }),
+            new Vector({ x: 242, y: 184 }),
+            new Vector({ x: 395, y: 187 }),
+            new Vector({ x: 65, y: 352 }),
+            new Vector({ x: 217, y: 358 }),
+            new Vector({ x: 367, y: 372 }),
         ];
 
         this.currentFrame = 0;
@@ -68,7 +89,7 @@ export default class Character {
 
         this.attackBox = {
             offset: {
-                x: 25,
+                x: 30,
                 y: 25,
             },
             position: {
@@ -82,6 +103,12 @@ export default class Character {
         this.health = 100;
 
         this.collision = false;
+
+        this.isHit = false;
+
+        this.dead = false;
+
+        this.healthElement = healthElement;
     }
 
     /**
@@ -99,11 +126,15 @@ export default class Character {
             this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
             this.attackBox.position.y = this.position.y + this.attackBox.offset.y;
         }
-        // );
         context.drawImage(
             this.image,
-            this.standingPositions[this.currentFrame].x,
-            this.standingPositions[this.currentFrame].y,
+            this.dead ?
+            this.deadPositions[this.currentFrame].x :
+            this.positions[this.currentFrame].x,
+            this.dead ?
+            this.deadPositions[this.currentFrame].y :
+            this.positions[this.currentFrame].y,
+            // this.positions[this.currentFrame].y,
             this.width,
             this.height,
             this.isFlipped ? (this.position.x + this.width) * -1 : this.position.x,
@@ -111,6 +142,20 @@ export default class Character {
             this.width,
             this.height
         );
+
+        // if (this.isHit) {
+        //     context.drawImage(
+        //         bloodAnimation,
+        //         bloodSpriteCoordinates[this.currentFrame].x,
+        //         bloodSpriteCoordinates[this.currentFrame].y,
+        //         bloodSpritewidth,
+        //         bloodSpriteHeight,
+        //         this.isFlipped ? (this.position.x + this.width) * -1 : this.position.x,
+        //         this.position.y + 30,
+        //         this.width / 2,
+        //         this.height / 2
+        //     );
+        // }
 
         if (this.isFlipped) context.restore();
 
@@ -124,6 +169,7 @@ export default class Character {
             if (this.increaseFrame === true) {
                 this.currentFrame++;
                 if (this.currentFrame >= this.maxFrames - 1) {
+                    // if()
                     this.increaseFrame = false;
                 }
             } else {
@@ -144,8 +190,10 @@ export default class Character {
 
     /** update the character on each animation frame */
     update() {
+        // if (this.dead) return;
         this.draw();
         this.animateFrames();
+        if (this.dead) return;
         this.position.y += this.velocity.y;
         if (this.position.y + this.height + this.velocity.y >= canvas.height)
             this.velocity.y = 0;
@@ -159,18 +207,18 @@ export default class Character {
             this.position.x + this.velocity.x > 0
         ) {
             this.velocity.x = -5;
-            if (!this.isAttacking) this.image.src = this.character.walk;
+            if (!this.isAttacking) this.image = this.character.walk;
             this.isFlipped = true;
         } else if (
             this.keys.right.pressed === true &&
             this.lastKey === this.keys.right.key &&
             this.position.x + this.velocity.x + this.width < canvas.width
         ) {
-            if (!this.isAttacking) this.image.src = this.character.walk;
+            if (!this.isAttacking) this.image = this.character.walk;
             this.velocity.x = 5;
             this.isFlipped = false;
         } else {
-            if (!this.isAttacking) this.image.src = this.character.stand;
+            if (!this.isAttacking) this.image = this.character.stand;
         }
 
         if (
@@ -182,7 +230,7 @@ export default class Character {
         }
 
         if (this.keys.attack.pressed === true) {
-            // this.image.src = this.character.attack;
+            // this.image = this.character.attack;
             if (!this.isAttacking) this.attack();
             // this.framesHold = 2;
         }
@@ -192,18 +240,35 @@ export default class Character {
 
     /** Handle character attack */
     attack() {
-        this.currentFrame = 0;
-        this.isAttacking = true;
-        setTimeout(() => {
-            this.collision = false;
-            this.isAttacking = false;
+        if (!this.dead) {
             this.currentFrame = 0;
-        }, (secondsToMiliseconds(1) / (DEFAULT_FPS / this.framesHold)) * this.maxFrames);
-        this.image.src = this.character.attack;
+            this.isAttacking = true;
+            setTimeout(() => {
+                this.collision = false;
+                this.isAttacking = false;
+                this.currentFrame = 0;
+            }, (secondsToMiliseconds(1) / (DEFAULT_FPS / this.framesHold)) * this.maxFrames);
+            this.image = this.character.attack;
+        }
     }
 
     takeHit() {
-        if (this.health > 0) this.health -= 10;
-        console.log(this.health);
+        this.health -= 10;
+        updateHealth(this.health, this.healthElement);
+
+        if (this.health > 0) {
+            // this.isHit = true;
+            // setTimeout(() => {
+            //     this.isHit = false;
+            //     this.currentFrame = 0;
+            // }, (secondsToMiliseconds(1) / (DEFAULT_FPS / this.framesHold)) * this.maxFrames);
+        } else {
+            this.dead = true;
+            this.image = this.character.dead;
+        }
     }
+
+    // animateBlood() {
+
+    // }
 }

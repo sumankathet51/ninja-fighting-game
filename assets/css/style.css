@@ -1,13 +1,59 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 .container {
     height: 100vh;
     width: 100vw;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+}
+
+.healthbar {
+    position: absolute;
+    /* height: 50px; */
+    display: flex;
+    align-items: center;
+    top: 15%;
+}
+
+.healthbar .healthbar__totalHealth {
+    width: 27rem;
+    background-color: red;
+}
+
+.timer {
+    background-color: aqua;
+    padding: 1.5rem;
+}
+
+.timer span {
+    /* padding: 10px; */
+    font-size: 1.2rem;
+}
+
+.healthbar__availableHealth {
+    background-color: green;
+    height: 50px;
+    transition: all 1s ease-in-out;
+}
+
+.border-white-5 {
+    border: 5px solid #fff;
+}
+
+.br-none {
+    border-right: none;
+}
+
+.bl-none {
+    border-left: none;
+}
+
+.winner {
+    display: none;
+    font-size: 2rem;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

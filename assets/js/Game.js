@@ -1,12 +1,27 @@
 import Character from "./character.js";
 import Vector from "./Vector.js";
-import { setKeyPressed, unsetKeyPressed } from "./utilities.js";
-import { backgroundImages, characters, context, keys } from "./constants.js";
+import {
+    displayWinner,
+    setKeyPressed,
+    setTime,
+    unsetKeyPressed,
+} from "./utilities.js";
+import {
+    backgroundImages,
+    characters,
+    context,
+    keys,
+    playerHealthIndicator,
+} from "./constants.js";
 
 export default class Game {
-    /**
-     * Initiliaze the game
-     */
+    constructor(time = 59) {
+            this.currentTime = time;
+            this.gameOver = false;
+        }
+        /**
+         * Initiliaze the game
+         */
     initialize() {
         this.player1 = new Character(
             new Vector({
@@ -20,7 +35,9 @@ export default class Game {
             86,
             75,
             keys.character1,
-            characters.character1
+            characters.character1,
+            false,
+            playerHealthIndicator[0]
         );
         this.player1.initialize();
         // Player 2
@@ -37,7 +54,8 @@ export default class Game {
             65,
             keys.character2,
             characters.character2,
-            true
+            true,
+            playerHealthIndicator[1]
         );
         this.player2.initialize();
         // Background Image
@@ -46,6 +64,7 @@ export default class Game {
 
         this.addEvents();
         this.animate();
+        setInterval(this.timer, 1000);
     }
 
     /**
@@ -63,31 +82,48 @@ export default class Game {
 
     /** Animate Players */
     animate() {
+        if (this.gameOver) return;
+
+        context.drawImage(this.bgImage, 0, 0);
+        this.player1.update();
+
+        this.player2.update();
+        // console.log("position after update", this.player2.attackBox.position.x);
+        this.checkCollision();
+        this.animationFrame = requestAnimationFrame(() => this.animate());
+    }
+
+    checkCollision() {
         if (
             this.player1.isAttacking &&
-            this.player1.attackBox.position.x <
+            Math.abs(this.player1.attackBox.position.x) <
             this.player2.position.x + this.player2.width &&
-            Math.abs(this.player2.attackBox.position.x) +
-            this.player1.attackBox.width >
-            this.player2.position.x &&
+            Math.abs(
+                this.player1.attackBox.position.x + this.player1.attackBox.width
+            ) > this.player2.position.x &&
             this.player1.attackBox.position.y <
             this.player2.position.y + this.player2.height &&
             this.player1.attackBox.height + this.player1.attackBox.position.y >
             this.player2.position.y
         ) {
+            console.log(
+                Math.abs(
+                    this.player1.attackBox.position.x + this.player1.attackBox.width
+                ),
+                this.player2.position.x
+            );
             if (!this.player1.collision) {
                 this.player1.collision = true;
                 this.player2.takeHit();
             }
         }
-
         if (
             this.player2.isAttacking &&
-            this.player2.attackBox.position.x <
+            Math.abs(this.player2.attackBox.position.x) <
             this.player1.position.x + this.player1.width &&
-            Math.abs(this.player2.attackBox.position.x) +
-            this.player2.attackBox.width >
-            this.player1.position.x &&
+            Math.abs(
+                this.player2.attackBox.position.x + this.player2.attackBox.width
+            ) > this.player1.position.x &&
             this.player2.attackBox.position.y <
             this.player1.position.y + this.player1.height &&
             this.player2.attackBox.height + this.player2.attackBox.position.y >
@@ -98,12 +134,24 @@ export default class Game {
                 this.player1.takeHit();
             }
         }
-        context.drawImage(this.bgImage, 0, 0);
+    }
 
-        this.player1.update();
+    timer = () => {
+        if (this.currentTime < 0) {
+            this.endGame();
+            return;
+        }
+        setTime(this.currentTime);
+        this.currentTime--;
+    };
 
-        this.player2.update();
-
-        requestAnimationFrame(() => this.animate());
+    endGame() {
+        this.gameOver = true;
+        if (this.player1.health > this.player2.health)
+            displayWinner("Player 1 wins");
+        else if (this.player1.health < this.player2.health)
+            displayWinner("Player 2 wins");
+        else displayWinner("Draw");
+        window.cancelAnimationFrame(this.animationFrame);
     }
 }
