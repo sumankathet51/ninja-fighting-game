@@ -265,6 +265,7 @@ export default class Character {
         } else {
             this.dead = true;
             this.image = this.character.dead;
+            return true;
         }
     }
 

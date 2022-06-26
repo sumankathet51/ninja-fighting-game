@@ -1,7 +1,15 @@
-const express = require("express");
+// const express = require("express");
+import express from "express";
 
 const app = express();
-const path = require("path");
+// const path = require("path");
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
+const __filename = fileURLToPath(
+    import.meta.url);
+const __dirname = dirname(__filename);
 
 app.use(express.static(__dirname + "/assets"));
 

@@ -114,7 +114,7 @@ export default class Game {
             );
             if (!this.player1.collision) {
                 this.player1.collision = true;
-                this.player2.takeHit();
+                if (this.player2.takeHit()) this.endGame();
             }
         }
         if (
@@ -131,7 +131,7 @@ export default class Game {
         ) {
             if (!this.player2.collision) {
                 this.player2.collision = true;
-                this.player1.takeHit();
+                if (this.player1.takeHit()) this.endGame();
             }
         }
     }
