@@ -1,6 +1,6 @@
 import Character from "./character.js";
 
-import Vector from "./Vector.js";
+import Vector from "./vector.js";
 
 import {
     displayWinner,
