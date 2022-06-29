@@ -110,7 +110,7 @@ export default class Game {
         this.player2.destinationPosition =
             this.player1.position.x + this.player1.width;
         // console.log("player1 position = ", this.player1.position.x);
-        if (dx + this.player1.width > 0) {
+        if (dx > 0) {
             this.player2.keys.left.pressed = true;
             this.player2.lastKey = this.player2.keys.left.key;
         } else if (dx < 0) {
