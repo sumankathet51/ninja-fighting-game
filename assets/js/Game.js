@@ -107,14 +107,13 @@ export default class Game {
         //     "Destination position = ",
         //     this.player1.position.x + this.player1.width
         // );
-
         this.player2.destinationPosition =
             this.player1.position.x + this.player1.width;
         // console.log("player1 position = ", this.player1.position.x);
-        if (dx - this.player1.width > 0) {
+        if (dx + this.player1.width > 0) {
             this.player2.keys.left.pressed = true;
             this.player2.lastKey = this.player2.keys.left.key;
-        } else if (dx + this.player1.width < 0) {
+        } else if (dx < 0) {
             // player.keys.left.pressed = true;
             this.player2.lastKey = this.player2.keys.right.key;
             this.player2.keys.right.pressed = true;
@@ -159,10 +158,18 @@ export default class Game {
         }
         this.player2.update();
 
-        if (this.player1.isAttacking)
+        if (
+            this.player1.isAttacking &&
+            this.player1.currentFrame > 2 &&
+            this.player1.currentFrame < 7
+        )
         // console.log("position after update", this.player2.attackBox.position.x);
             this.checkCollision(this.player1, this.player2);
-        if (this.player2.isAttacking)
+        if (
+            this.player2.isAttacking &&
+            this.player2.currentFrame > 2 &&
+            this.player2.currentFrame < 7
+        )
             this.checkCollision(this.player2, this.player1);
         this.animationFrame = requestAnimationFrame(() => this.animate());
     };

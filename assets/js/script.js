@@ -49,7 +49,9 @@ setInterval(() => {
 const startButtons = document.querySelectorAll(".start-btn");
 startButtons.forEach((startButton) => {
     startButton.addEventListener("click", function() {
-        startScreen.style.display = "none";
-        game.initialize(this.dataset.singleplayer === "true", 59);
+        startScreen.style.left = "-100%";
+        setTimeout(() => {
+            game.initialize(this.dataset.singleplayer === "true");
+        }, 1000);
     });
 });

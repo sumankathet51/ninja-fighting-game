@@ -68,19 +68,6 @@ export default class Character {
             new Vector({ x: 400, y: 336 }),
         ];
 
-        // this.flippedPositions = [
-        //     new Vector({ x: 512, y: 12 }),
-        //     new Vector({ x: 183, y: 175 }),
-        //     new Vector({ x: 351, y: 179 }),
-        //     new Vector({ x: 351, y: 16 }),
-        //     new Vector({ x: 189, y: 14 }),
-        //     new Vector({ x: 512, y: 179 }),
-        //     new Vector({ x: 186, y: 334 }),
-        //     new Vector({ x: 334, y: 332 }),
-        //     new Vector({ x: 504, y: 332 }),
-        //     // new Vector({ x: 400, y: 336 }),
-        // ];
-
         this.deadPositions = deadPositions;
 
         this.currentFrame = 0;
