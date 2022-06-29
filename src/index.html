@@ -6,10 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ninja Fighter</title>
+    <link rel="stylesheet" href="/css/variables.css">
     <link rel="stylesheet" href="/css/resets.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/utilities.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -34,15 +35,37 @@
             <p class="text-center" id="winner__Declaration"></p>
         </div>
         <canvas id="canvas"></canvas>
+
+        <div class="startUpScreen">
+            <div class="ninja-animation"></div>
+            <h1 class="text-center p-2">
+                Ninja Fighting Game
+            </h1>
+
+            <p class="text-center">Select Game mode</p>
+
+            <div class="player-modes d-flex gap-2 align-flex-end">
+                <div class="player-mode">
+                    <div class="image p-2">
+                        <img src="/images/bot.png" alt="" height="100px">
+                    </div>
+                    <div class="text">
+                        <p class="mb-1">Single Player</p>
+                        <button class="btn btn-primary start-btn" data-singlePlayer="true">Select</button>
+                    </div>
+
+                </div>
+                <div class="player-mode">
+                    <div class="image ">
+                        <img src="/images/ninja_stand.png" alt="" height="100px">
+                    </div>
+                    <p class="mb-1">2 Player</p>
+                    <button class="btn btn-secondary start-btn" data-singlePlayer="false">Select</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- <script src="/js/constants.js"></script>
-    <script src="/js/sprite.js" type="module"></script>
-    <script src="/js/utilities.js" type="module"></script>
-    <script src="/js/vector.js" type="module"></script>
-    <script src="/js/character.js" type="module"></script>
-    <script src="/js/game.js" type="module"></script>
-    <script src="/js/level.js" type="module"></script> -->
     <script src="/js/script.js" type="module"></script>
 
 </body>

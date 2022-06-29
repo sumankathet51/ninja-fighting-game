@@ -22,6 +22,9 @@ export default class Character {
      * @param {object} keys - The keys combination that the character use
      * @param {object} character - The character Images
      * @param {boolean=false} isFlipped - flag to check if the character needs to be flipped
+     * @param {object} healthElement - Health bar DOM element
+     * @param {object} deadPositions - Dead animation sprite
+     * @param {boolean=false} isBot - Determine if the currenbt player is a player or a Bot
      */
     constructor(
         position = new Vector(0, 0),
@@ -31,9 +34,13 @@ export default class Character {
         keys,
         character,
         isFlipped = false,
-        healthElement
+        healthElement,
+        deadPositions,
+        isBot = false
     ) {
         this.position = position;
+
+        this.isBot = isBot;
 
         this.velocity = velocity;
 
@@ -61,17 +68,20 @@ export default class Character {
             new Vector({ x: 400, y: 336 }),
         ];
 
-        this.deadPositions = [
-            new Vector({ x: 90, y: 20 }),
-            new Vector({ x: 400, y: 24 }),
-            new Vector({ x: 530, y: 42 }),
-            new Vector({ x: 87, y: 182 }),
-            new Vector({ x: 242, y: 184 }),
-            new Vector({ x: 395, y: 187 }),
-            new Vector({ x: 65, y: 352 }),
-            new Vector({ x: 217, y: 358 }),
-            new Vector({ x: 367, y: 372 }),
-        ];
+        // this.flippedPositions = [
+        //     new Vector({ x: 512, y: 12 }),
+        //     new Vector({ x: 183, y: 175 }),
+        //     new Vector({ x: 351, y: 179 }),
+        //     new Vector({ x: 351, y: 16 }),
+        //     new Vector({ x: 189, y: 14 }),
+        //     new Vector({ x: 512, y: 179 }),
+        //     new Vector({ x: 186, y: 334 }),
+        //     new Vector({ x: 334, y: 332 }),
+        //     new Vector({ x: 504, y: 332 }),
+        //     // new Vector({ x: 400, y: 336 }),
+        // ];
+
+        this.deadPositions = deadPositions;
 
         this.currentFrame = 0;
 
@@ -114,7 +124,7 @@ export default class Character {
     /**
      * Draws the character in the canvas
      */
-    draw() {
+    draw = () => {
         if (this.isFlipped) {
             context.save();
             context.scale(-1, 1);
@@ -126,6 +136,19 @@ export default class Character {
             this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
             this.attackBox.position.y = this.position.y + this.attackBox.offset.y;
         }
+        // context.fillRect(
+        //     this.attackBox.position.x,
+        //     this.attackBox.position.y,
+        //     this.attackBox.width,
+        //     this.attackBox.height
+        // );
+        // context.fillRect(
+        //     this.isFlipped ? (this.position.x + this.width) * -1 : this.position.x,
+        //     this.position.y,
+        //     this.width,
+        //     this.height
+        // );
+
         context.drawImage(
             this.image,
             this.dead ?
@@ -143,33 +166,20 @@ export default class Character {
             this.height
         );
 
-        // if (this.isHit) {
-        //     context.drawImage(
-        //         bloodAnimation,
-        //         bloodSpriteCoordinates[this.currentFrame].x,
-        //         bloodSpriteCoordinates[this.currentFrame].y,
-        //         bloodSpritewidth,
-        //         bloodSpriteHeight,
-        //         this.isFlipped ? (this.position.x + this.width) * -1 : this.position.x,
-        //         this.position.y + 30,
-        //         this.width / 2,
-        //         this.height / 2
-        //     );
-        // }
-
+        if (this.dead) console.log(this.currentFrame);
         if (this.isFlipped) context.restore();
 
         // context.restore();
-    }
+    };
 
     /** handle Character animation / Movements after certain frames */
-    animateFrames() {
+    animateFrames = () => {
         this.framesElapsed++;
         if (this.framesElapsed >= this.framesHold) {
             if (this.increaseFrame === true) {
+                if (this.dead && this.currentFrame >= this.maxFrames - 1) return;
                 this.currentFrame++;
                 if (this.currentFrame >= this.maxFrames - 1) {
-                    // if()
                     this.increaseFrame = false;
                 }
             } else {
@@ -181,15 +191,15 @@ export default class Character {
             //  % this.maxFrames;
             this.framesElapsed = 0;
         }
-    }
+    };
 
     /** Initialize the character */
-    initialize() {
+    initialize = () => {
         this.draw();
-    }
+    };
 
     /** update the character on each animation frame */
-    update() {
+    update = () => {
         // if (this.dead) return;
         this.draw();
         this.animateFrames();
@@ -201,45 +211,47 @@ export default class Character {
 
         this.velocity.x = 0;
         // console.log(this.position.x + this.velocity.x, canvas.width);
-        if (
-            this.keys.left.pressed === true &&
-            this.lastKey === this.keys.left.key &&
-            this.position.x + this.velocity.x > 0
-        ) {
-            this.velocity.x = -5;
-            if (!this.isAttacking) this.image = this.character.walk;
-            this.isFlipped = true;
-        } else if (
-            this.keys.right.pressed === true &&
-            this.lastKey === this.keys.right.key &&
-            this.position.x + this.velocity.x + this.width < canvas.width
-        ) {
-            if (!this.isAttacking) this.image = this.character.walk;
-            this.velocity.x = 5;
-            this.isFlipped = false;
-        } else {
-            if (!this.isAttacking) this.image = this.character.stand;
-        }
+        if (!this.isBot) {
+            if (
+                this.keys.left.pressed === true &&
+                this.lastKey === this.keys.left.key &&
+                this.position.x + this.velocity.x > 0
+            ) {
+                this.velocity.x = -5;
+                if (!this.isAttacking) this.image = this.character.walk;
+                this.isFlipped = true;
+            } else if (
+                this.keys.right.pressed === true &&
+                this.lastKey === this.keys.right.key &&
+                this.position.x + this.velocity.x + this.width < canvas.width
+            ) {
+                if (!this.isAttacking) this.image = this.character.walk;
+                this.velocity.x = 5;
+                this.isFlipped = false;
+            } else {
+                if (!this.isAttacking) this.image = this.character.stand;
+            }
 
-        if (
-            this.keys.up.pressed === true &&
-            this.position.y + this.height + this.velocity.y >= canvas.height
-        ) {
-            this.velocity.y = -20;
-            this.position.y += this.velocity.y;
-        }
+            if (
+                this.keys.up.pressed === true &&
+                this.position.y + this.height + this.velocity.y >= canvas.height
+            ) {
+                this.velocity.y = -20;
+                this.position.y += this.velocity.y;
+            }
 
-        if (this.keys.attack.pressed === true) {
-            // this.image = this.character.attack;
-            if (!this.isAttacking) this.attack();
-            // this.framesHold = 2;
+            if (this.keys.attack.pressed === true) {
+                // this.image = this.character.attack;
+                if (!this.isAttacking) this.attack();
+                // this.framesHold = 2;
+            }
+            // console.log(this.collision);
+            this.position.x += this.velocity.x;
         }
-        // console.log(this.collision);
-        this.position.x += this.velocity.x;
-    }
+    };
 
     /** Handle character attack */
-    attack() {
+    attack = () => {
         if (!this.dead) {
             this.currentFrame = 0;
             this.isAttacking = true;
@@ -250,9 +262,9 @@ export default class Character {
             }, (secondsToMiliseconds(1) / (DEFAULT_FPS / this.framesHold)) * this.maxFrames);
             this.image = this.character.attack;
         }
-    }
+    };
 
-    takeHit() {
+    takeHit = () => {
         this.health -= 10;
         updateHealth(this.health, this.healthElement);
 
@@ -267,7 +279,7 @@ export default class Character {
             this.image = this.character.dead;
             return true;
         }
-    }
+    };
 
     // animateBlood() {
 

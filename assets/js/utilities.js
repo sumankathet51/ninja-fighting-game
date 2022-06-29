@@ -34,108 +34,67 @@ export function displayWinner(winner) {
 /**
  *
  * @param {string} eventKey - Key that was pressed
- * @param {Character} player1 - Player1 Object
- * @param {Character} player2 - Player2 Object
+ * @param {Character[]} players - Array of players
  */
-export function setKeyPressed(eventKey, player1, player2) {
-    switch (eventKey) {
-        case player1.keys.up.key:
-            player1.keys.up.pressed = true;
-            break;
+export function setKeyPressed(eventKey, ...players) {
+    players.forEach((player) => {
+        switch (eventKey) {
+            case player.keys.up.key:
+                player.keys.up.pressed = true;
+                break;
 
-        case player1.keys.down.key:
-            player1.keys.down.pressed = true;
-            player1.lastKey = player1.keys.down.key;
-            break;
+            case player.keys.down.key:
+                player.keys.down.pressed = true;
+                player.lastKey = player.keys.down.key;
+                break;
 
-        case player1.keys.left.key:
-            player1.keys.left.pressed = true;
-            player1.lastKey = player1.keys.left.key;
-            break;
+            case player.keys.left.key:
+                player.keys.left.pressed = true;
+                player.lastKey = player.keys.left.key;
+                break;
 
-        case player1.keys.right.key:
-            player1.keys.right.pressed = true;
-            player1.lastKey = player1.keys.right.key;
-            break;
+            case player.keys.right.key:
+                player.keys.right.pressed = true;
+                player.lastKey = player.keys.right.key;
+                break;
 
-        case player1.keys.attack.key:
-            player1.keys.attack.pressed = true;
-            break;
-
-        case player2.keys.up.key:
-            player2.keys.up.pressed = true;
-            break;
-
-        case player2.keys.down.key:
-            player2.keys.down.pressed = true;
-            player2.lastKey = player2.keys.down.key;
-            break;
-
-        case player2.keys.left.key:
-            player2.keys.left.pressed = true;
-            player2.lastKey = player2.keys.left.key;
-            break;
-
-        case player2.keys.right.key:
-            player2.keys.right.pressed = true;
-            player2.lastKey = player2.keys.right.key;
-            break;
-
-        case player2.keys.attack.key:
-            player2.keys.attack.pressed = true;
-            break;
-    }
+            case player.keys.attack.key:
+                player.keys.attack.pressed = true;
+                break;
+        }
+    });
 }
 
 /**
  *
  * @param {string} eventKey - Key that was pressed
- * @param {Character} player1 - Player1 Object
- * @param {Character} player2 - Player2 Object
+ * @param {Character[]} players - Array of players
  */
-export function unsetKeyPressed(eventKey, player1, player2) {
-    switch (eventKey) {
-        case player1.keys.up.key:
-            player1.keys.up.pressed = false;
-            break;
+export function unsetKeyPressed(eventKey, ...players) {
+    players.forEach((player) => {
+        switch (eventKey) {
+            case player.keys.up.key:
+                player.keys.up.pressed = false;
+                break;
 
-        case player1.keys.down.key:
-            player1.keys.down.pressed = false;
-            break;
+            case player.keys.down.key:
+                player.keys.down.pressed = false;
+                break;
 
-        case player1.keys.left.key:
-            player1.keys.left.pressed = false;
+            case player.keys.left.key:
+                player.keys.left.pressed = false;
 
-            break;
+                break;
 
-        case player1.keys.right.key:
-            player1.keys.right.pressed = false;
-            break;
+            case player.keys.right.key:
+                player.keys.right.pressed = false;
+                break;
 
-        case player1.keys.attack.key:
-            player1.keys.attack.pressed = false;
-            break;
-
-        case player2.keys.up.key:
-            player2.keys.up.pressed = false;
-            break;
-
-        case player2.keys.down.key:
-            player2.keys.down.pressed = false;
-            break;
-
-        case player2.keys.left.key:
-            player2.keys.left.pressed = false;
-            break;
-
-        case player2.keys.right.key:
-            player2.keys.right.pressed = false;
-            break;
-
-        case player2.keys.attack.key:
-            player2.keys.attack.pressed = false;
-            break;
-    }
+            case player.keys.attack.key:
+                player.keys.attack.pressed = false;
+                break;
+        }
+    });
 }
 
 export function secondsToMiliseconds(seconds) {

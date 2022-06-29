@@ -91,11 +91,11 @@ export const characters = {
     },
 };
 
-characters.character1.stand.src = "./images/haku_kale/ninja_stand.png";
-characters.character1.walk.src = "./images/haku_kale/ninja_run.png";
-characters.character1.hit.src = "./images/haku_kale/ninja_hit.png";
-characters.character1.attack.src = "./images/haku_kale/ninja_attack.png";
-characters.character1.dead.src = "./images/haku_kale/ninja_dead.png";
+characters.character1.stand.src = "./images/ninja/ninja_stand.png";
+characters.character1.walk.src = "./images/ninja/ninja_run.png";
+characters.character1.hit.src = "./images/ninja/ninja_hit.png";
+characters.character1.attack.src = "./images/ninja/ninja_attack.png";
+characters.character1.dead.src = "./images/ninja/ninja_dead.png";
 
 characters.character2.stand.src = "./images/pandu/ninja_stand.png";
 characters.character2.walk.src = "./images/pandu/ninja_run.png";

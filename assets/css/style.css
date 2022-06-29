@@ -57,3 +57,40 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.startUpScreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 3rem;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 186, 238, 1);
+    /* border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(7.1px);
+    -webkit-backdrop-filter: blur(7.1px);
+    border: 1px solid rgba(255, 255, 255, 0.34); */
+    height: 100vh;
+    width: 100vw;
+}
+
+.ninja-animation {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    background-image: url("/images/start_animation.png");
+    /* background-size: 100rem; */
+    background-position: -1330px -2771px;
+}
+
+.player-modes {
+    width: 40%;
+    margin: 0 auto;
+    margin-top: 2rem;
+}
+
+.player-modes .player-mode {
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 0.5rem 0.5rem -0.4rem rgb(61 155 185 / 55%);
+}

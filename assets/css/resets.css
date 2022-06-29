@@ -7,3 +7,8 @@
 body {
     font-family: "Press Start 2P", cursive;
 }
+
+h1 {
+    font-family: "Bangers", cursive;
+    letter-spacing: 10px;
+}
