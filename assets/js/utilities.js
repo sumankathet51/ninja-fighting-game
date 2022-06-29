@@ -100,3 +100,10 @@ export function unsetKeyPressed(eventKey, ...players) {
 export function secondsToMiliseconds(seconds) {
     return seconds * 1000;
 }
+
+export function calcDistance(...players) {
+    const dx = players[0].position.x - players[1].position.x;
+    const dy = players[0].position.y - players[1].position.y;
+
+    return Math.sqrt(dx * dx + dy * dy);
+}

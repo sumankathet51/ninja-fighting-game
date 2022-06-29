@@ -210,44 +210,42 @@ export default class Character {
         else this.velocity.y += GRAVITY;
 
         this.velocity.x = 0;
-        // console.log(this.position.x + this.velocity.x, canvas.width);
-        if (!this.isBot) {
-            if (
-                this.keys.left.pressed === true &&
-                this.lastKey === this.keys.left.key &&
-                this.position.x + this.velocity.x > 0
-            ) {
-                this.velocity.x = -5;
-                if (!this.isAttacking) this.image = this.character.walk;
-                this.isFlipped = true;
-            } else if (
-                this.keys.right.pressed === true &&
-                this.lastKey === this.keys.right.key &&
-                this.position.x + this.velocity.x + this.width < canvas.width
-            ) {
-                if (!this.isAttacking) this.image = this.character.walk;
-                this.velocity.x = 5;
-                this.isFlipped = false;
-            } else {
-                if (!this.isAttacking) this.image = this.character.stand;
-            }
-
-            if (
-                this.keys.up.pressed === true &&
-                this.position.y + this.height + this.velocity.y >= canvas.height
-            ) {
-                this.velocity.y = -20;
-                this.position.y += this.velocity.y;
-            }
-
-            if (this.keys.attack.pressed === true) {
-                // this.image = this.character.attack;
-                if (!this.isAttacking) this.attack();
-                // this.framesHold = 2;
-            }
-            // console.log(this.collision);
-            this.position.x += this.velocity.x;
+        if (
+            this.keys.left.pressed === true &&
+            this.lastKey === this.keys.left.key &&
+            this.position.x + this.velocity.x > 0
+        ) {
+            this.velocity.x = -5;
+            if (!this.isAttacking) this.image = this.character.walk;
+            this.isFlipped = true;
+        } else if (
+            this.keys.right.pressed === true &&
+            this.lastKey === this.keys.right.key &&
+            this.position.x + this.velocity.x + this.width < canvas.width
+        ) {
+            if (!this.isAttacking) this.image = this.character.walk;
+            this.velocity.x = 5;
+            this.isFlipped = false;
+        } else {
+            if (!this.isAttacking) this.image = this.character.stand;
         }
+
+        if (
+            this.keys.up.pressed === true &&
+            this.position.y + this.height + this.velocity.y >= canvas.height
+        ) {
+            this.velocity.y = -20;
+            this.position.y += this.velocity.y;
+        }
+
+        if (this.keys.attack.pressed === true) {
+            // this.image = this.character.attack;
+            if (!this.isAttacking) this.attack();
+            // this.framesHold = 2;
+        }
+        // console.log(this.collision);
+        this.position.x += this.velocity.x;
+        // }
     };
 
     /** Handle character attack */

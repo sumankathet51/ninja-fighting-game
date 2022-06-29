@@ -3,6 +3,7 @@ import Character from "./character.js";
 import Vector from "./Vector.js";
 
 import {
+    calcDistance,
     displayWinner,
     secondsToMiliseconds,
     setKeyPressed,
@@ -60,7 +61,7 @@ export default class Game {
         // Player 2
         this.player2 = new Character(
             new Vector({
-                x: 1024 - 80,
+                x: 1024 - 400,
                 y: 100,
             }),
             new Vector({
@@ -69,9 +70,9 @@ export default class Game {
             }),
             89,
             65,
-            this.singleplayer ? "" : keys.character2,
+            keys.character2,
             characters.character2,
-            true,
+            false,
             playerHealthIndicator[1], [
                 new Vector({ x: 80, y: 13 }),
                 new Vector({ x: 384, y: 20 }),
@@ -95,11 +96,29 @@ export default class Game {
         this.animate();
         this.timeCounter = setInterval(this.timer, 1000);
         if (this.singleplayer)
-            this.timeCounter = setInterval(this.findOpponent, 1000);
+            this.findPlayer = setInterval(this.findOpponent, 1000);
     };
 
     findOpponent = () => {
-        console.log(this.player1.position.x, this.player2.position.x);
+        const dx = this.player2.position.x - this.player1.position.x;
+        // const dy = this.player2.position.y - this.player1.position.y;
+        // const distance = Math.sqrt(dx * dx + dy * dy);
+        // console.log(
+        //     "Destination position = ",
+        //     this.player1.position.x + this.player1.width
+        // );
+
+        this.player2.destinationPosition =
+            this.player1.position.x + this.player1.width;
+        // console.log("player1 position = ", this.player1.position.x);
+        if (dx - this.player1.width > 0) {
+            this.player2.keys.left.pressed = true;
+            this.player2.lastKey = this.player2.keys.left.key;
+        } else if (dx + this.player1.width < 0) {
+            // player.keys.left.pressed = true;
+            this.player2.lastKey = this.player2.keys.right.key;
+            this.player2.keys.right.pressed = true;
+        }
     };
 
     /**
@@ -127,10 +146,21 @@ export default class Game {
     animate = () => {
         context.drawImage(this.bgImage, 0, 0);
         this.player1.update();
-
+        // console.log(calcDistance(this.player2, this.player1));
+        if (
+            // this.player2.position.x >= this.player2.destinationPosition &&
+            calcDistance(this.player2, this.player1) < 20
+        ) {
+            this.player2.keys.left.pressed = false;
+            this.player2.keys.right.pressed = false;
+            this.player2.keys.attack.pressed = true;
+        } else {
+            this.player2.keys.attack.pressed = false;
+        }
         this.player2.update();
-        // console.log("position after update", this.player2.attackBox.position.x);
+
         if (this.player1.isAttacking)
+        // console.log("position after update", this.player2.attackBox.position.x);
             this.checkCollision(this.player1, this.player2);
         if (this.player2.isAttacking)
             this.checkCollision(this.player2, this.player1);
@@ -166,6 +196,7 @@ export default class Game {
     endGame = () => {
         this.gameOver = true;
         clearInterval(this.timeCounter);
+        clearInterval(this.findPlayer);
         if (this.player1.health > this.player2.health) {
             this.player2.currentFrame = 0;
             this.player2.framesElapsed = 0;
