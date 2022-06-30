@@ -18,7 +18,7 @@ export function updateHealth(health, element) {
  *
  * @param {number} time - Remaining Time
  */
-export function setTime(time) {
+export function updateTimer(time) {
     CURRENT_TIME.innerText = time;
 }
 
@@ -29,6 +29,16 @@ export function setTime(time) {
 export function displayWinner(winner) {
     WINNER_CONTAINER.style.display = "block";
     WINNER_STATEMENT.innerText = winner;
+}
+
+export function killPlayer(player) {
+    player.currentFrame = 0;
+    player.framesElapsed = 0;
+    player.dead = true;
+    player.width = 89;
+    player.height = 60;
+    player.position.y += 20;
+    player.image = player.character.dead;
 }
 
 /**
@@ -99,4 +109,11 @@ export function unsetKeyPressed(eventKey, ...players) {
 
 export function secondsToMiliseconds(seconds) {
     return seconds * 1000;
+}
+
+export function calcDistance(...players) {
+    const dx = players[0].position.x - players[1].position.x;
+    const dy = players[0].position.y - players[1].position.y;
+
+    return Math.sqrt(dx * dx + dy * dy);
 }

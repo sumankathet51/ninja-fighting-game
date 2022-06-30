@@ -17,22 +17,26 @@
     <div class="container">
 
         <div class="healthbar">
-            <div class="healthbar__totalHealth border-white-5 br-none">
+            <!-- <div class="healthbar__totalHealth border-white-5 br-none">
                 <div class="healthbar__availableHealth"></div>
-            </div>
+            </div> -->
 
             <div class="timer border-white-5 ">
                 <span id="time">60</span>
             </div>
-
+            <!-- 
             <div class="healthbar__totalHealth border-white-5 bl-none">
                 <div class="healthbar__availableHealth"></div>
-            </div>
+            </div> -->
         </div>
 
         <div class="winner">
-            <p class="text-center"> Game Over </p>
-            <p class="text-center" id="winner__Declaration"></p>
+            <div class="game-finished">
+                <p class="text-center"> Game Over </p>
+                <p class="text-center" id="winner__Declaration"></p>
+                <button type="button" class="btn btn-primary">Restart Game</button>
+            </div>
+
         </div>
         <canvas id="canvas"></canvas>
 
@@ -64,15 +68,47 @@
                 </div>
             </div>
         </div>
+
+        <!-- <div class="select-character">
+            <div class="heading text-center">
+                <h2>Ninja Fighter</h2>
+            </div>
+            <p class="text-center">
+                Select your characters
+            </p>
+            <div class="characters d-flex">
+                <div class="characters__player">
+                    <h3 class="text-center">Player 1</h3>
+                    <div class="characters__player__images d-flex">
+                        <div class="character__image">
+                            <img src="/images/ninja/face.png" alt=" Player">
+                        </div>
+                        <div class=" character__image ">
+                            <img src=" /images/pandu/face.png" alt="Player">
+                        </div>
+                        <div class=" character__image">
+                            <img src="/images/sundari/face.png" alt="Player">
+                        </div>
+                    </div>
+                </div>
+                <div class=" characters__player ">
+                    <h3 class="text-center">Player 2</h3>
+                    <div class="characters__player__images d-flex">
+                        <div class="character__image">
+                            <img src="/images/ninja/face.png" alt=" Player">
+                        </div>
+                        <div class=" character__image ">
+                            <img src=" /images/pandu/face.png" alt="Player">
+                        </div>
+                        <div class=" character__image">
+                            <img src="/images/sundari/face.png" alt="Player">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
     </div>
-<!-- <script src="/js/constants.js" type="module"></script>
-    <script src="/js/sprite.js" type="module"></script>
-    <script src="/js/utilities.js" type="module"></script>
-    <script src="/js/vector.js" type="module"></script>
-    <script src="/js/character.js" type="module"></script>
-    <script src="/js/game.js" type="module"></script>
-    <script src="/js/level.js" type="module"></script> -->
-    <script src="/js/script.js" type="module"></script>
+    <script src="/js/script.js " type="module"></script>
 
 </body>
 
