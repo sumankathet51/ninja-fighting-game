@@ -1,8 +1,11 @@
+import { canvas, context } from "./constants.js";
 import Game from "./game.js";
+import { MapEditor } from "./levelEditor.js";
+import { Level2 } from "./levels/level2.js";
+import { Obstacle } from "./obstacle.js";
 import Vector from "./vector.js";
 
-const game = new Game();
-console.log("HELLO");
+
 const bgAnimation = document.querySelector(".ninja-animation");
 const startScreen = document.querySelector(".startUpScreen");
 const bgPositions = [
@@ -36,7 +39,7 @@ const bgPositions = [
 ];
 let counter = 0;
 let add = true;
-setInterval(() => {
+const ninjaAnimation = setInterval(() => {
     if (counter >= bgPositions.length - 1) add = false;
     if (counter <= 0) add = true;
 
@@ -50,8 +53,33 @@ const startButtons = document.querySelectorAll(".start-btn");
 startButtons.forEach((startButton) => {
     startButton.addEventListener("click", function() {
         startScreen.style.left = "-100%";
+        clearInterval(ninjaAnimation);
         setTimeout(() => {
-            game.initialize(this.dataset.singleplayer === "true");
+            const level2 = new Level2();
+
+            // game.initialize(this.dataset.singleplayer === "true");
         }, 1000);
     });
 });
+
+
+// const mapEditor = new MapEditor(canvas, context);
+
+// const obstacleElements = document.querySelectorAll(
+//     ".obstacles__img-container img"
+// );
+// obstacleElements.forEach((obstacle) => {
+//     obstacle.addEventListener("dblclick", function() {
+//         // const obstacle = new Obstacle(
+//         //     200,
+//         //     200,
+//         //     this.height,
+//         //     this.width,
+//         //     this,
+//         //     true
+//         // );
+//         mapEditor.selectImage(this, true);
+//         mapEditor.draw();
+//         console.log(this);
+//     });
+// });

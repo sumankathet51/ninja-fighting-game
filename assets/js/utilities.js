@@ -117,3 +117,11 @@ export function calcDistance(...players) {
 
     return Math.sqrt(dx * dx + dy * dy);
 }
+
+export function getMousePos(canvas, event) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: ((event.clientX - rect.left) / (rect.right - rect.left)) * canvas.width,
+        y: ((event.clientY - rect.top) / (rect.bottom - rect.top)) * canvas.height,
+    };
+}
