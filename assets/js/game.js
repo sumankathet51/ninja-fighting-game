@@ -1,9 +1,7 @@
 import Character from "./character.js";
-
 import Vector from "./vector.js";
 
 import {
-    calcDistance,
     displayWinner,
     killPlayer,
     secondsToMiliseconds,
@@ -13,10 +11,8 @@ import {
 } from "./utilities.js";
 
 import {
-    backgroundImages,
     canvas,
     characters,
-    context,
     DEFAULT_FPS,
     keys,
     playerHealthIndicator,
@@ -32,54 +28,12 @@ export default class Game {
         /**
          * Initiliaze the game
          */
-    initialize = (isSinglePlayer) => {
-        this.singleplayer = isSinglePlayer;
-        this.player1 = new Character(
-            new Vector({
-                x: 0,
-                y: 0,
-            }),
-            new Vector({
-                x: 0,
-                y: 0,
-            }),
-            86,
-            75,
-            keys.character1,
-            characters.ninja,
-            false,
-            playerHealthIndicator[0]
-        );
-        this.player2 = new Character(
-            new Vector({
-                x: 1024 - 400,
-                y: 100,
-            }),
-            new Vector({
-                x: 0,
-                y: 0,
-            }),
-            89,
-            65,
-            keys.character2,
-            characters.pandu,
-            false,
-            playerHealthIndicator[1],
-            isSinglePlayer
-        );
+        // initialize = (isSinglePlayer = true) => {
 
-        this.player1.initialize();
-        this.player2.initialize();
-        // Background Image
-        this.bgImage = new Image();
-        this.bgImage.src = backgroundImages[0];
-
-        this.addEvents();
-        this.animate();
-        this.timeCounter = setInterval(this.timer, 1000);
-        if (this.singleplayer)
-            this.findPlayer = setInterval(this.findOpponent, 1000);
-    };
+    //     // Background Image
+    //     // this.bgImage = new Image();
+    //     // this.bgImage.src = backgroundImages[0];
+    // };
 
     findOpponent = () => {
         const dx = this.player2.position.x - this.player1.position.x;
@@ -116,39 +70,6 @@ export default class Game {
                 unsetKeyPressed(event.key, this.player1, this.player2);
             });
         }
-    };
-
-    /** Animate Players */
-    animate = () => {
-        context.drawImage(this.bgImage, 0, 0);
-        this.player1.update();
-        // console.log(calcDistance(this.player2, this.player1));
-        // console.log(isSinglePlayer);
-        if (this.singleplayer) {
-            if (calcDistance(this.player2, this.player1) < this.player2.width) {
-                this.player2.keys.left.pressed = false;
-                this.player2.keys.right.pressed = false;
-                this.player2.keys.attack.pressed = true;
-            } else {
-                this.player2.keys.attack.pressed = false;
-            }
-        }
-        this.player2.update();
-
-        if (
-            this.player1.isAttacking &&
-            this.player1.currentFrame > 2 &&
-            this.player1.currentFrame < 7
-        )
-        // console.log("position after update", this.player2.attackBox.position.x);
-            this.checkCollision(this.player1, this.player2);
-        if (
-            this.player2.isAttacking &&
-            this.player2.currentFrame > 2 &&
-            this.player2.currentFrame < 7
-        )
-            this.checkCollision(this.player2, this.player1);
-        this.animationFrame = requestAnimationFrame(() => this.animate());
     };
 
     checkCollision = (attacker, defender) => {

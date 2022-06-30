@@ -1,6 +1,7 @@
 import { Obstacle } from "./obstacle.js";
+import { getMousePos } from "./utilities.js";
 
-export class mapEditor {
+export class MapEditor {
     constructor(canvas, context) {
         this.canvas = canvas;
         this.context = context;
@@ -13,19 +14,10 @@ export class mapEditor {
         this.canvas.height = 576;
         this.currentIndex = 0;
         this.draw();
+        this.addEventListeners();
     }
 
-    getMousePos(canvas, event) {
-        const rect = canvas.getBoundingClientRect();
-        return {
-            x:
-                ((event.clientX - rect.left) / (rect.right - rect.left)) * canvas.width,
-            y:
-                ((event.clientY - rect.top) / (rect.bottom - rect.top)) * canvas.height,
-        };
-    }
-
-    draw() {
+    draw = () => {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.drawImage(
             document.getElementById("bg"),
@@ -51,14 +43,14 @@ export class mapEditor {
 
         for (let y = 0; y < 576; y += 50) {
             this.context.moveTo(0, y);
-            context.lineTo(1024, y);
+            this.context.lineTo(1024, y);
         }
         this.context.lineWidth = 1;
         this.context.strokeStyle = "#ddd";
         this.context.stroke();
-    }
+    };
 
-    selectImage(image, isObstacle) {
+    selectImage = (image, isObstacle) => {
         const obstacle = new Obstacle(
             200,
             200,
@@ -69,51 +61,40 @@ export class mapEditor {
         );
         this.obstacles.push(obstacle);
         this.draw();
-    }
+    };
 
-    // canvas.addEventListener("click", (e) => {
-    //     if (!selectedImage) return;
-    //     const obstacle = new Obstacle(
-    //         e.offsetX,
-    //         e.offsetY,
-    //         selectedImage.width,
-    //         selectedImage.height,
-    //         selectedImage
-    //     );
-    //     obstacles.push(obstacle);
-    //     draw();
-    // });
-
-    mouseDown(event) {
+    mouseDown = (event) => {
         event.preventDefault();
-        const mouseCoordinates = this.getMousePos(this.canvas, event);
+        console.log(this.canvas);
+
+        const mouseCoordinates = getMousePos(this.canvas, event);
 
         this.startX = mouseCoordinates.x;
         this.startY = mouseCoordinates.y;
         this.obstacles.forEach((obstacle, index) => {
-            if (checkMousePosition(this.startX, this.startY, obstacle)) {
+            if (this.checkMousePosition(this.startX, this.startY, obstacle)) {
                 this.currentIndex = index;
                 this.isDragging = true;
                 return;
             }
         });
-    }
+    };
 
-    mouseUp(event) {
+    mouseUp = (event) => {
         if (!this.isDragging) return;
         event.preventDefault();
         this.isDragging = false;
         // console.log(event);
-    }
+    };
 
-    mouseOut(event) {
+    mouseOut = (event) => {
         if (!this.isDragging) return;
         event.preventDefault();
         this.isDragging = false;
         // console.log(isDragging);
-    }
+    };
 
-    mouseMove(event) {
+    mouseMove = (event) => {
         if (!this.isDragging) return;
         event.preventDefault();
         const mouseCoordinates = getMousePos(this.canvas, event);
@@ -123,17 +104,17 @@ export class mapEditor {
         const dx = x - this.startX;
         const dy = y - this.startY;
 
-        const currentObstacle = this.obstacles[currentIndex];
+        const currentObstacle = this.obstacles[this.currentIndex];
         currentObstacle.position.x += dx;
         currentObstacle.position.y += dy;
 
-        draw();
+        this.draw();
 
         this.startX = x;
         this.startY = y;
-    }
+    };
 
-    checkMousePosition(x, y, obstacle) {
+    checkMousePosition = (x, y, obstacle) => {
         if (
             x > obstacle.position.x &&
             x < obstacle.position.x + obstacle.width &&
@@ -143,51 +124,46 @@ export class mapEditor {
             return true;
         }
         return false;
-    }
+    };
 
-    deleteBlock(event) {
+    deleteBlock = (event) => {
         event.preventDefault();
         const mouseCoordinates = getMousePos(this.canvas, event);
         this.startX = mouseCoordinates.x;
         this.startY = mouseCoordinates.y;
         this.obstacles.forEach((obstacle, index) => {
-            if (checkMousePosition(this.startX, this.startY, obstacle)) {
+            if (this.checkMousePosition(this.startX, this.startY, obstacle)) {
                 this.obstacles = this.obstacles.filter((value, index) => {
                     return value !== obstacle;
                 });
-                draw();
+                this.draw();
                 return;
             }
         });
-    }
+    };
 
-    addEventListeners() {
+    addEventListeners = () => {
         this.canvas.addEventListener("mousedown", this.mouseDown);
         this.canvas.addEventListener("mouseup", this.mouseUp);
         this.canvas.addEventListener("mouseout", this.mouseOut);
         this.canvas.addEventListener("mousemove", this.mouseMove);
         this.canvas.addEventListener("dblclick", this.deleteBlock);
-    }
+        this.canvas.addEventListener("click", (e) => {
+            if (!this.selectedImage) return;
+            const obstacle = new Obstacle(
+                e.offsetX,
+                e.offsetY,
+                this.selectedImage.width,
+                this.selectedImage.height,
+                this.selectedImage
+            );
+            this.obstacles.push(obstacle);
+            this.draw();
+        });
+    };
 
-    // class Vector {
-    //     constructor({ x, y }) {
-    //         this.x = x;
-    //         this.y = y;
-    //     }
-    // }
-
-    // const ob = new Obstacle(
-    //     100,
-    //     100,
-    //     50,
-    //     50,
-    //     document.getElementsByTagName("img")[0]
-    // );
-    // obstacles.push(ob);
-
-    createLevel() {
-            console.log(JSON.stringify(this.obstacles));
-            // console.log(obstacles);
-        }
+    createLevel = () => {
+        console.log(JSON.stringify(this.obstacles));
         // console.log(obstacles);
+    };
 }

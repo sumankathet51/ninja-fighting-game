@@ -34,7 +34,7 @@ export default class Character {
         keys,
         character,
         isFlipped = false,
-        healthElement,
+        // healthElement,
         isBot = false
     ) {
         this.position = position;
@@ -94,7 +94,7 @@ export default class Character {
 
         this.dead = false;
 
-        this.healthElement = healthElement;
+        // this.healthElement = healthElement;
     }
 
     /**
@@ -207,7 +207,7 @@ export default class Character {
             this.keys.up.pressed === true &&
             this.position.y + this.height + this.velocity.y >= canvas.height
         ) {
-            this.velocity.y = -20;
+            this.velocity.y = -15;
             this.position.y += this.velocity.y;
         }
 
