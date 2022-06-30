@@ -1,14 +1,5 @@
-import {
-    bloodAnimation,
-    bloodSpriteCoordinates,
-    bloodSpriteHeight,
-    bloodSpritewidth,
-    canvas,
-    context,
-    DEFAULT_FPS,
-    GRAVITY,
-} from "./constants.js";
-import { secondsToMiliseconds, updateHealth } from "./utilities.js";
+import { canvas, context, DEFAULT_FPS, GRAVITY } from "./constants.js";
+import { checkCollision, secondsToMiliseconds } from "./utilities.js";
 import Vector from "./vector.js";
 
 /** Class Representating a character iof the Game */
@@ -94,6 +85,9 @@ export default class Character {
 
         this.dead = false;
 
+        this.isMoving = true;
+
+        this.currentObstacle = "";
         // this.healthElement = healthElement;
     }
 
@@ -101,15 +95,17 @@ export default class Character {
      * Draws the character in the canvas
      */
     draw = () => {
-        context.fillStyle = "red";
-        context.fillRect(this.position.x, this.position.y - 10, 100, 20);
-        context.fillStyle = "green";
-        context.fillRect(this.position.x, this.position.y - 10, this.health, 20);
+        if (!this.dead) {
+            context.fillStyle = "red";
+            context.fillRect(this.position.x, this.position.y - 10, 100, 20);
+            context.fillStyle = "green";
+            context.fillRect(this.position.x, this.position.y - 10, this.health, 20);
+        }
         if (this.isFlipped) {
             context.save();
             context.scale(-1, 1);
             this.attackBox.position.x =
-                (this.position.x + this.width) * -1 + this.attackBox.offset.x;
+                this.position.x - this.width + this.attackBox.offset.x;
             this.attackBox.position.y = this.position.y + this.attackBox.offset.y;
         } else {
             this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
@@ -176,11 +172,8 @@ export default class Character {
         // if (this.dead) return;
         this.draw();
         this.animateFrames();
+
         if (this.dead) return;
-        this.position.y += this.velocity.y;
-        if (this.position.y + this.height + this.velocity.y >= canvas.height)
-            this.velocity.y = 0;
-        else this.velocity.y += GRAVITY;
 
         this.velocity.x = 0;
         if (
@@ -205,11 +198,18 @@ export default class Character {
 
         if (
             this.keys.up.pressed === true &&
-            this.position.y + this.height + this.velocity.y >= canvas.height
+            (this.currentObstacle ?
+                checkCollision(this, this.currentObstacle) :
+                this.position.y + this.height + this.velocity.y >= canvas.height)
         ) {
+            console.log(this.keys.up.pressed);
+            this.isMoving = true;
             this.velocity.y = -15;
             this.position.y += this.velocity.y;
         }
+
+        // if (this.currentObstacle && !checkCollision(this, this.currentObstacle))
+        //     this.velocity.y += GRAVITY;
 
         if (this.keys.attack.pressed === true) {
             // this.image = this.character.attack;
@@ -218,6 +218,9 @@ export default class Character {
         }
         // console.log(this.collision);
         this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
+
+        // console.log(this.velocity.y);
         // }
     };
 
@@ -233,6 +236,35 @@ export default class Character {
             }, (secondsToMiliseconds(1) / (DEFAULT_FPS / this.framesHold)) * this.maxFrames);
             this.image = this.character.attack;
         }
+    };
+
+    checkObstacleCollision = (obstacles) => {
+        // if (this.position.y + this.height + this.velocity.y >= canvas.height)
+        //     this.velocity.y = 0;
+        // else this.velocity.y += GRAVITY;
+        if (this.isMoving && obstacles.length > 0) {
+            let isCollision = false;
+            for (let obstacle of obstacles) {
+                if (checkCollision(this, obstacle)) {
+                    // console.log("COLLISION");
+                    this.velocity.y = 0;
+                    this.currentObstacle = obstacle;
+                    this.isMoving = false;
+                    isCollision = true;
+                    // return false;
+                    break;
+                }
+            }
+            if (!isCollision) {
+                this.velocity.y += GRAVITY;
+                this.isMoving = true;
+            }
+            // noCollision = false;
+        } else {
+            this.velocity.y += GRAVITY;
+            this.isMoving = true;
+        }
+        this.position.y += this.velocity.y;
     };
 
     //   slide = () => {

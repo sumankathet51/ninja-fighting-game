@@ -1,10 +1,10 @@
 import { canvas, context } from "./constants.js";
 import Game from "./game.js";
 import { MapEditor } from "./levelEditor.js";
+import { Level1 } from "./levels/level1.js";
 import { Level2 } from "./levels/level2.js";
 import { Obstacle } from "./obstacle.js";
 import Vector from "./vector.js";
-
 
 const bgAnimation = document.querySelector(".ninja-animation");
 const startScreen = document.querySelector(".startUpScreen");
@@ -55,13 +55,11 @@ startButtons.forEach((startButton) => {
         startScreen.style.left = "-100%";
         clearInterval(ninjaAnimation);
         setTimeout(() => {
-            const level2 = new Level2();
-
+            const level1 = new Level1(this.dataset.singleplayer === "true");
             // game.initialize(this.dataset.singleplayer === "true");
         }, 1000);
     });
 });
-
 
 // const mapEditor = new MapEditor(canvas, context);
 

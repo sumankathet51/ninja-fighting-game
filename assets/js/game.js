@@ -10,34 +10,17 @@ import {
     updateTimer,
 } from "./utilities.js";
 
-import {
-    canvas,
-    characters,
-    DEFAULT_FPS,
-    keys,
-    playerHealthIndicator,
-    WINNER_CONTAINER,
-} from "./constants.js";
+import { canvas, DEFAULT_FPS, WINNER_CONTAINER } from "./constants.js";
 
 export default class Game {
-    constructor(time = 59) {
-            this.currentTime = time;
-            this.gameOver = false;
-            this.singleplayer = false;
-        }
-        /**
-         * Initiliaze the game
-         */
-        // initialize = (isSinglePlayer = true) => {
-
-    //     // Background Image
-    //     // this.bgImage = new Image();
-    //     // this.bgImage.src = backgroundImages[0];
-    // };
+    constructor(time = 59, singleplayer) {
+        this.currentTime = time;
+        this.gameOver = false;
+        this.singleplayer = singleplayer;
+    }
 
     findOpponent = () => {
         const dx = this.player2.position.x - this.player1.position.x;
-
         this.player2.destinationPosition =
             this.player1.position.x + this.player1.width;
 
@@ -72,11 +55,10 @@ export default class Game {
         }
     };
 
-    checkCollision = (attacker, defender) => {
+    checkPlayerCollision = (attacker, defender) => {
         if (
-            Math.abs(attacker.attackBox.position.x) <
-            defender.position.x + defender.width &&
-            Math.abs(attacker.attackBox.position.x + attacker.attackBox.width) >
+            attacker.attackBox.position.x < defender.position.x + defender.width &&
+            attacker.attackBox.position.x + attacker.attackBox.width >
             defender.position.x &&
             attacker.attackBox.position.y < defender.position.y + defender.height &&
             attacker.attackBox.height + attacker.attackBox.position.y >
@@ -105,18 +87,24 @@ export default class Game {
         this.gameOver = true;
         clearInterval(this.timeCounter);
         clearInterval(this.findPlayer);
+        let winnerText = "";
+        let win = false;
         if (this.player1.health > this.player2.health) {
             killPlayer(this.player2);
-            displayWinner("Player 1 wins");
+            if (this.singleplayer) {
+                win = true;
+                winnerText = "You Win!";
+            } else winnerText = "Player 1 wins";
         } else if (this.player1.health < this.player2.health) {
             killPlayer(this.player1);
-            displayWinner("Player 2 wins");
-        } else displayWinner("Draw");
+            if (this.singleplayer) winnerText = "You Lose!";
+            else winnerText = "Player 2 wins";
+        } else winnerText = "Draw";
 
         setTimeout(() => {
             window.cancelAnimationFrame(this.animationFrame);
+            displayWinner(winnerText, win);
+            canvas.style.display = "none";
         }, (secondsToMiliseconds(1) / (DEFAULT_FPS / this.player2.framesHold)) * this.player2.maxFrames);
-        canvas.style.display = "none";
-        WINNER_CONTAINER.style.display = "block";
     };
 }

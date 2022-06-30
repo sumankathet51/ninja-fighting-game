@@ -30,15 +30,17 @@
             </div> -->
         </div>
 
-        <div class="winner">
-            <div class="game-finished">
-                <p class="text-center"> Game Over </p>
-                <p class="text-center" id="winner__Declaration"></p>
-                <button type="button" class="btn btn-primary">Restart Game</button>
-            </div>
 
-        </div>
         <div>
+            <div class="winner">
+                <div class="game-finished">
+                    <p class="text-center mb-1"> Game Over </p>
+                    <p class="text-center mb-1" id="winner__Declaration"></p>
+                    <button type="button" class="btn btn-primary" data-game="restart">Restart Game</button>
+                    <button type="button" class="btn btn-secondary" data-game="next">Next Level</button>
+                </div>
+
+            </div>
             <canvas id="canvas"></canvas>
 
             <div class="obstacles" id="obstacle-container">
