@@ -35,7 +35,6 @@ export default class Character {
         character,
         isFlipped = false,
         healthElement,
-        deadPositions,
         isBot = false
     ) {
         this.position = position;
@@ -56,19 +55,9 @@ export default class Character {
 
         this.image = character.stand;
 
-        this.positions = [
-            new Vector({ x: 76, y: 12 }),
-            new Vector({ x: 400, y: 12 }),
-            new Vector({ x: 561, y: 12 }),
-            new Vector({ x: 76, y: 175 }),
-            new Vector({ x: 238, y: 175 }),
-            new Vector({ x: 400, y: 175 }),
-            new Vector({ x: 76, y: 336 }),
-            new Vector({ x: 238, y: 336 }),
-            new Vector({ x: 400, y: 336 }),
-        ];
+        this.positions = character.positions;
 
-        this.deadPositions = deadPositions;
+        this.deadPositions = character.deadPositions;
 
         this.currentFrame = 0;
 
@@ -112,10 +101,13 @@ export default class Character {
      * Draws the character in the canvas
      */
     draw = () => {
+        context.fillStyle = "red";
+        context.fillRect(this.position.x, this.position.y - 10, 100, 20);
+        context.fillStyle = "green";
+        context.fillRect(this.position.x, this.position.y - 10, this.health, 20);
         if (this.isFlipped) {
             context.save();
             context.scale(-1, 1);
-
             this.attackBox.position.x =
                 (this.position.x + this.width) * -1 + this.attackBox.offset.x;
             this.attackBox.position.y = this.position.y + this.attackBox.offset.y;
@@ -128,12 +120,6 @@ export default class Character {
         //     this.attackBox.position.y,
         //     this.attackBox.width,
         //     this.attackBox.height
-        // );
-        // context.fillRect(
-        //     this.isFlipped ? (this.position.x + this.width) * -1 : this.position.x,
-        //     this.position.y,
-        //     this.width,
-        //     this.height
         // );
 
         context.drawImage(
@@ -249,9 +235,33 @@ export default class Character {
         }
     };
 
+    //   slide = () => {
+    //     if (!this.dead) {
+    //       this.currentFrame = 0;
+    //       this.velocity = 5;
+    //       setTimeout(() => {
+    //         this.currentFrame = 0;
+    //       }, (secondsToMiliseconds(1) / (DEFAULT_FPS / this.framesHold)) * this.maxFrames);
+    //       this.image = this.character.slide;
+    //     }
+    //   };
+
+    // secondttack = () => {
+    //     if (!this.dead) {
+    //         this.currentFrame = 0;
+    //         this.isAttacking = true;
+    //         setTimeout(() => {
+    //             this.collision = false;
+    //             this.isAttacking = false;
+    //             this.currentFrame = 0;
+    //         }, (secondsToMiliseconds(1) / (DEFAULT_FPS / this.framesHold)) * this.maxFrames);
+    //         this.image = this.character.attack;
+    //     }
+    // };
+
     takeHit = () => {
         this.health -= 10;
-        updateHealth(this.health, this.healthElement);
+        // updateHealth(this.health, this.healthElement);
 
         if (this.health > 0) {
             // this.isHit = true;

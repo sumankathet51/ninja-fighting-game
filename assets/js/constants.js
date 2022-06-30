@@ -75,33 +75,78 @@ export const keys = {
  * @const {object} - Holds the sprite images of each characters
  */
 export const characters = {
-    character1: {
+    ninja: {
         stand: new Image(),
         walk: new Image(),
         hit: new Image(),
         attack: new Image(),
         dead: new Image(),
+        positions: [
+            new Vector({ x: 76, y: 12 }),
+            new Vector({ x: 400, y: 12 }),
+            new Vector({ x: 561, y: 12 }),
+            new Vector({ x: 76, y: 175 }),
+            new Vector({ x: 238, y: 175 }),
+            new Vector({ x: 400, y: 175 }),
+            new Vector({ x: 76, y: 336 }),
+            new Vector({ x: 238, y: 336 }),
+            new Vector({ x: 400, y: 336 }),
+        ],
+        deadPositions: [
+            new Vector({ x: 80, y: 13 }),
+            new Vector({ x: 384, y: 20 }),
+            new Vector({ x: 65, y: 181 }),
+            new Vector({ x: 231, y: 180 }),
+            new Vector({ x: 395, y: 187 }),
+            new Vector({ x: 371, y: 187 }),
+            new Vector({ x: 217, y: 358 }),
+            new Vector({ x: 55, y: 346 }),
+            new Vector({ x: 525, y: 68 }),
+        ],
     },
-    character2: {
+    pandu: {
         stand: new Image(),
         walk: new Image(),
         hit: new Image(),
         attack: new Image(),
         dead: new Image(),
+        positions: [
+            new Vector({ x: 76, y: 12 }),
+            new Vector({ x: 400, y: 12 }),
+            new Vector({ x: 561, y: 12 }),
+            new Vector({ x: 76, y: 175 }),
+            new Vector({ x: 238, y: 175 }),
+            new Vector({ x: 400, y: 175 }),
+            new Vector({ x: 76, y: 336 }),
+            new Vector({ x: 238, y: 336 }),
+            new Vector({ x: 400, y: 336 }),
+        ],
+
+        deadPositions: [
+            new Vector({ x: 76, y: 12 }),
+            new Vector({ x: 400, y: 12 }),
+            new Vector({ x: 561, y: 12 }),
+            new Vector({ x: 76, y: 175 }),
+            new Vector({ x: 238, y: 175 }),
+            new Vector({ x: 400, y: 175 }),
+            new Vector({ x: 76, y: 336 }),
+            new Vector({ x: 238, y: 336 }),
+            new Vector({ x: 400, y: 336 }),
+        ],
     },
 };
 
-characters.character1.stand.src = "./images/ninja/ninja_stand.png";
-characters.character1.walk.src = "./images/ninja/ninja_run.png";
-characters.character1.hit.src = "./images/ninja/ninja_hit.png";
-characters.character1.attack.src = "./images/ninja/ninja_attack.png";
-characters.character1.dead.src = "./images/ninja/ninja_dead.png";
+characters.ninja.stand.src = "./images/ninja/ninja_stand.png";
+characters.ninja.walk.src = "./images/ninja/ninja_run.png";
+characters.ninja.hit.src = "./images/ninja/ninja_hit.png";
+characters.ninja.attack.src = "./images/ninja/ninja_attack.png";
+characters.ninja.dead.src = "./images/ninja/ninja_dead.png";
 
-characters.character2.stand.src = "./images/pandu/ninja_stand.png";
-characters.character2.walk.src = "./images/pandu/ninja_run.png";
-characters.character2.hit.src = "./images/pandu/ninja_hit.png";
-characters.character2.attack.src = "./images/pandu/ninja_attack.png";
-characters.character2.dead.src = "./images/pandu/ninja_dead.png";
+characters.pandu.stand.src = "./images/pandu/ninja_stand.png";
+characters.pandu.walk.src = "./images/pandu/ninja_run.png";
+characters.pandu.hit.src = "./images/pandu/ninja_hit.png";
+characters.pandu.attack.src = "./images/pandu/ninja_attack.png";
+characters.pandu.dead.src = "./images/pandu/ninja_dead.png";
 
 export const playerHealthIndicator = document.querySelectorAll(
     ".healthbar__availableHealth"

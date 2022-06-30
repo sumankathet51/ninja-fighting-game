@@ -2,7 +2,7 @@ import Game from "./game.js";
 import Vector from "./vector.js";
 
 const game = new Game();
-
+console.log("HELLO");
 const bgAnimation = document.querySelector(".ninja-animation");
 const startScreen = document.querySelector(".startUpScreen");
 const bgPositions = [
