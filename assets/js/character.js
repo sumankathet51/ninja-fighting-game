@@ -9,7 +9,7 @@ import {
     GRAVITY,
 } from "./constants.js";
 import { secondsToMiliseconds, updateHealth } from "./utilities.js";
-import Vector from "./Vector.js";
+import Vector from "./vector.js";
 
 /** Class Representating a character iof the Game */
 export default class Character {
