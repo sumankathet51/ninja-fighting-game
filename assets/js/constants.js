@@ -186,3 +186,4 @@ export const CURRENT_TIME = document.getElementById("time");
 export const WINNER_CONTAINER = document.querySelector(".winner");
 
 export const WINNER_STATEMENT = document.getElementById("winner__Declaration");
+console.log(WINNER_STATEMENT);

@@ -13,7 +13,7 @@
     display: flex;
     align-items: center;
     top: 15%;
-    display: none;
+    /* display: none; */
 }
 
 .healthbar .healthbar__totalHealth {
@@ -51,10 +51,8 @@
 
 .winner {
     background: rgba(0, 186, 238, 1);
-    /* display: none; */
     font-size: 2rem;
-    /* color: #fff; */
-    /* position: absolute; */
+    color: #fff;
     height: 100vh;
     width: 100vw;
     position: relative;
@@ -62,10 +60,11 @@
 }
 
 .game-finished {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .startUpScreen {
@@ -111,6 +110,7 @@
     display: flex;
     flex-wrap: wrap;
     width: 1024px;
+    display: none;
 }
 
 .obstacles .obstacles__img-container {
@@ -121,7 +121,7 @@
 /* canvas,
 .healthbar {
     display: none;
-}
+} */
 
 .characters {
     gap: 3rem;
@@ -135,4 +135,4 @@
 
 .character__image img {
     width: 100px;
-} */
+}

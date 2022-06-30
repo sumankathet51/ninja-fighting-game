@@ -92,7 +92,7 @@ const data = [{
         width: 20,
         image: {},
         url: "/images/Crate.png",
-        isObstacle: true,
+        isObstacle: false,
     },
     {
         position: { x: 22, y: 474 },
@@ -484,7 +484,7 @@ const data = [{
         width: 20,
         image: {},
         url: "/images/Crate.png",
-        isObstacle: true,
+        isObstacle: false,
     },
     {
         position: { x: 3, y: 249 },
@@ -596,7 +596,7 @@ const data = [{
         width: 20,
         image: {},
         url: "/images/Crate.png",
-        isObstacle: true,
+        isObstacle: false,
     },
     {
         position: { x: 33, y: 222 },
@@ -636,7 +636,7 @@ const data = [{
         width: 20,
         image: {},
         url: "/images/Crate.png",
-        isObstacle: true,
+        isObstacle: false,
     },
     {
         position: { x: 457, y: 326 },

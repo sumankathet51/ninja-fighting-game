@@ -1,40 +1,24 @@
 import Character from "../character.js";
 import {
+    backgroundImages,
     canvas,
     characters,
     context,
+    GRAVITY,
     keys,
-    playerHealthIndicator,
 } from "../constants.js";
 import Game from "../game.js";
 import { Obstacle } from "../obstacle.js";
 import { calcDistance } from "../utilities.js";
 import Vector from "../vector.js";
 import data from "./gameMap.js";
-export class Level2 extends Game {
-    constructor() {
-        super(59);
+
+export class Level1 extends Game {
+    constructor(singleplayer = true) {
+        super(59, singleplayer);
         this.bgImage = new Image();
-        this.bgImage.src = "/images/BG.png";
-        this.obstacles = [];
-        // console.log(data)
+        this.bgImage.src = backgroundImages[0];
         this.initializeBackgroundAndObstacles();
-        data.forEach((obstacleData) => {
-            const image = new Image();
-            image.src = obstacleData.url;
-            const obstacle = new Obstacle(
-                obstacleData.position.x,
-                obstacleData.position.y,
-                obstacleData.height,
-                obstacleData.width,
-                image,
-                obstacleData.isObstacle
-            );
-
-            this.obstacles.push(obstacle);
-
-            // this.singleplayer = isSinglePlayer;
-        });
     }
 
     initializeBackgroundAndObstacles() {
@@ -96,33 +80,19 @@ export class Level2 extends Game {
         );
         context.drawImage(this.bgImage, 0, 0);
 
-        this.obstacles.forEach((obstacle) => {
-            obstacle.draw();
-            // console.log(obstacle);
-            // this.singleplayer = isSinglePlayer;
-        });
+        // this.obstacles.forEach((obstacle) => {
+        //     obstacle.draw();
+        // });
     }
 
     /** Animate Players */
     animate = () => {
         this.draw();
-        if (this.player1.isMoving) {
-            let currentObstacles = [];
-            currentObstacles = this.obstacles.filter(
-                (obstacle) =>
-                obstacle.isObstacle && calcDistance(this.player1, obstacle) < 200
-            );
-
-            this.player1.checkObstacleCollision(currentObstacles);
-        }
-
-        if (this.player1.keys.up.pressed === false) {
-            this.player1.velocity.y += GRAVITY;
-            this.player1.isMoving = true;
-        }
         this.player1.update();
         if (this.singleplayer) {
-            if (calcDistance(this.player2, this.player1) < this.player2.width) {
+            if (
+                calcDistance(this.player2, this.player1) < this.player2.attackBox.width
+            ) {
                 this.player2.keys.left.pressed = false;
                 this.player2.keys.right.pressed = false;
                 this.player2.keys.attack.pressed = true;
@@ -131,15 +101,22 @@ export class Level2 extends Game {
             }
         }
 
-        if (this.player2.isMoving) {
-            let currentObstacles = [];
-            currentObstacles = this.obstacles.filter(
-                (obstacle) =>
-                obstacle.isObstacle && calcDistance(this.player2, obstacle) < 200
-            );
+        this.player1.position.y += this.player1.velocity.y;
+        if (
+            this.player1.position.y + this.player1.height + this.player1.velocity.y >=
+            canvas.height
+        )
+            this.player1.velocity.y = 0;
+        else this.player1.velocity.y += GRAVITY;
 
-            this.player2.checkObstacleCollision(currentObstacles);
-        }
+        this.player2.position.y += this.player2.velocity.y;
+        if (
+            this.player2.position.y + this.player2.height + this.player2.velocity.y >=
+            canvas.height
+        )
+            this.player2.velocity.y = 0;
+        else this.player2.velocity.y += GRAVITY;
+
         this.player2.update();
 
         if (
