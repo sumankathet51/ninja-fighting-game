@@ -32,8 +32,9 @@ app.get("/api/game/", async(req, res) => {
     res.send({ msg: "success", gameMaps });
 });
 
-app.get("/api/game/store", async(req, res) => {
+app.post("/api/game/store", async(req, res) => {
     const data = req.body;
+    console.log(data.name);
     Map.add({
         name: data.name,
         obstacles: data.obstacles,

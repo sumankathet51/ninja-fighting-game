@@ -1,3 +1,4 @@
+import data from "./levels/gameMap.js";
 import { Obstacle } from "./obstacle.js";
 import { getMousePos } from "./utilities.js";
 
@@ -13,6 +14,7 @@ export class MapEditor {
         this.canvas.width = 1024;
         this.canvas.height = 576;
         this.currentIndex = 0;
+        this.grid = true;
         this.draw();
         this.addEventListeners();
     }
@@ -36,18 +38,20 @@ export class MapEditor {
             );
         });
 
-        for (let x = 0; x < 1024; x += 50) {
-            this.context.moveTo(x, 0);
-            this.context.lineTo(x, 576);
-        }
+        if (this.grid) {
+            for (let x = 0; x < 1024; x += 50) {
+                this.context.moveTo(x, 0);
+                this.context.lineTo(x, 576);
+            }
 
-        for (let y = 0; y < 576; y += 50) {
-            this.context.moveTo(0, y);
-            this.context.lineTo(1024, y);
+            for (let y = 0; y < 576; y += 50) {
+                this.context.moveTo(0, y);
+                this.context.lineTo(1024, y);
+            }
+            this.context.lineWidth = 1;
+            this.context.strokeStyle = "#ddd";
+            this.context.stroke();
         }
-        this.context.lineWidth = 1;
-        this.context.strokeStyle = "#ddd";
-        this.context.stroke();
     };
 
     selectImage = (image, isObstacle) => {
@@ -65,7 +69,6 @@ export class MapEditor {
 
     mouseDown = (event) => {
         event.preventDefault();
-        console.log(this.canvas);
 
         const mouseCoordinates = getMousePos(this.canvas, event);
 
@@ -163,7 +166,35 @@ export class MapEditor {
     };
 
     createLevel = () => {
-        console.log(JSON.stringify(this.obstacles));
+        let obData = JSON.stringify(this.obstacles);
+        console.log(obData);
+        fetch("http://localhost:3000/api/game/store", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: {
+                    name: "Level",
+                    obstacles: obData,
+                },
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Success:", data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
         // console.log(obstacles);
+    };
+
+    toggleGrid = () => {
+        console.log("Hello");
+        if (this.grid) {
+            this.grid = false;
+        } else {
+            this.grid = true;
+        }
+        this.draw();
     };
 }

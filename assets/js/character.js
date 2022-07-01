@@ -134,8 +134,6 @@ export default class Character {
             this.width,
             this.height
         );
-
-        if (this.dead) console.log(this.currentFrame);
         if (this.isFlipped) context.restore();
 
         // context.restore();
@@ -202,7 +200,6 @@ export default class Character {
                 checkCollision(this, this.currentObstacle) :
                 this.position.y + this.height + this.velocity.y >= canvas.height)
         ) {
-            console.log(this.keys.up.pressed);
             this.isMoving = true;
             this.velocity.y = -15;
             this.position.y += this.velocity.y;
@@ -255,6 +252,7 @@ export default class Character {
                     break;
                 }
             }
+            // console.log(isCollision);
             if (!isCollision) {
                 this.velocity.y += GRAVITY;
                 this.isMoving = true;

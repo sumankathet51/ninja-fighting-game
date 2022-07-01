@@ -10,7 +10,7 @@ import {
     updateTimer,
 } from "./utilities.js";
 
-import { canvas, DEFAULT_FPS, WINNER_CONTAINER } from "./constants.js";
+import { canvas, characters, DEFAULT_FPS, keys } from "./constants.js";
 
 export default class Game {
     constructor(time = 59, singleplayer) {
@@ -18,6 +18,26 @@ export default class Game {
         this.gameOver = false;
         this.singleplayer = singleplayer;
     }
+
+    restart = () => {
+        clearInterval(this.timeCounter);
+        clearInterval(this.findPlayer);
+        window.cancelAnimationFrame(this.animationFrame);
+        this.player1.position.x = 0;
+        this.player1.position.y = 0;
+        this.player1.velocity.x = 0;
+        this.player1.velocity.y = 0;
+
+        this.player2.position.x = 0;
+        this.player2.position.y = 0;
+        this.player2.velocity.x = 0;
+        this.player2.velocity.y = 0;
+
+        this.timeCounter = setInterval(this.timer, 1000);
+        if (this.singleplayer)
+            this.findPlayer = setInterval(this.findOpponent, 1000);
+        this.animate();
+    };
 
     findOpponent = () => {
         const dx = this.player2.position.x - this.player1.position.x;
@@ -85,6 +105,7 @@ export default class Game {
      */
     endGame = () => {
         this.gameOver = true;
+        this.currentTime = 59;
         clearInterval(this.timeCounter);
         clearInterval(this.findPlayer);
         let winnerText = "";
