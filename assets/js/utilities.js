@@ -1,18 +1,12 @@
 import Character from "./character.js";
 import {
+    canvas,
     CURRENT_TIME,
+    MAIN_MENU,
+    NEW_GAME,
     WINNER_CONTAINER,
     WINNER_STATEMENT,
 } from "./constants.js";
-
-/**
- *
- * @param {number} health - Total health of the player
- * @param {object} element - Health indicator element in the DOM
- */
-export function updateHealth(health, element) {
-    element.style.width = health + "%";
-}
 
 /**
  *
@@ -27,9 +21,15 @@ export function updateTimer(time) {
  * @param {string} winner - Current Winner text
  */
 export function displayWinner(winnerMessage, win) {
-    // if(winner === "You Win!" )
+    canvas.style.display = "none";
     WINNER_CONTAINER.style.display = "block";
-    WINNER_STATEMENT.innerText = winner;
+    WINNER_STATEMENT.innerText = winnerMessage;
+    MAIN_MENU.style.display = "none";
+    if (win) {
+        NEW_GAME.style.display = "block";
+    } else {
+        NEW_GAME.style.display = "none";
+    }
 }
 
 export function killPlayer(player) {

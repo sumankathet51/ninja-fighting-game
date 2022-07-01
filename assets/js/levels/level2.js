@@ -3,6 +3,7 @@ import {
     canvas,
     characters,
     context,
+    GRAVITY,
     keys,
     playerHealthIndicator,
 } from "../constants.js";
@@ -18,7 +19,7 @@ export class Level2 extends Game {
         this.bgImage.src = "/images/BG.png";
         this.obstacles = [];
         // console.log(data)
-        this.initializeBackgroundAndObstacles();
+        this.start();
         data.forEach((obstacleData) => {
             const image = new Image();
             image.src = obstacleData.url;
@@ -30,14 +31,15 @@ export class Level2 extends Game {
                 image,
                 obstacleData.isObstacle
             );
-
             this.obstacles.push(obstacle);
 
             // this.singleplayer = isSinglePlayer;
         });
     }
 
-    initializeBackgroundAndObstacles() {
+    start() {
+        canvas.style.display = "block";
+
         this.player1 = new Character(
             new Vector({
                 x: 0,
@@ -112,14 +114,15 @@ export class Level2 extends Game {
                 (obstacle) =>
                 obstacle.isObstacle && calcDistance(this.player1, obstacle) < 200
             );
+            console.log(currentObstacles);
 
             this.player1.checkObstacleCollision(currentObstacles);
         }
 
-        if (this.player1.keys.up.pressed === false) {
-            this.player1.velocity.y += GRAVITY;
-            this.player1.isMoving = true;
-        }
+        // if (this.player1.keys.up.pressed === false) {
+        //     this.player1.velocity.y += GRAVITY;
+        //     this.player1.isMoving = true;
+        // }
         this.player1.update();
         if (this.singleplayer) {
             if (calcDistance(this.player2, this.player1) < this.player2.width) {
@@ -137,7 +140,6 @@ export class Level2 extends Game {
                 (obstacle) =>
                 obstacle.isObstacle && calcDistance(this.player2, obstacle) < 200
             );
-
             this.player2.checkObstacleCollision(currentObstacles);
         }
         this.player2.update();

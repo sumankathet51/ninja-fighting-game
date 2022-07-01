@@ -30,6 +30,10 @@
     margin-bottom: 1rem;
 }
 
+.mt-2 {
+    margin-top: 2rem;
+}
+
 .btn {
     font-family: "Press Start 2P", cursive;
     padding: 0.87rem 2.31rem;

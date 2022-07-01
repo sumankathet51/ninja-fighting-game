@@ -186,4 +186,11 @@ export const CURRENT_TIME = document.getElementById("time");
 export const WINNER_CONTAINER = document.querySelector(".winner");
 
 export const WINNER_STATEMENT = document.getElementById("winner__Declaration");
-console.log(WINNER_STATEMENT);
+
+export const NEW_GAME = document.getElementById("new-game");
+
+export const OBSTACLE_CONTAINER = document.querySelector(".obstacles");
+
+export const TIMER = document.querySelector(".healthbar");
+
+export const MAIN_MENU = document.getElementById("main-menu");

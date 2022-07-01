@@ -18,10 +18,12 @@ export class Level1 extends Game {
         super(59, singleplayer);
         this.bgImage = new Image();
         this.bgImage.src = backgroundImages[0];
-        this.initializeBackgroundAndObstacles();
+        this.singleplayer = singleplayer;
+        // this.start();
     }
 
-    initializeBackgroundAndObstacles() {
+    start() {
+        canvas.style.display = "block";
         this.player1 = new Character(
             new Vector({
                 x: 0,
@@ -55,8 +57,6 @@ export class Level1 extends Game {
             true
         );
         this.draw();
-        this.player1.initialize();
-        this.player2.initialize();
         // this.initialize();
         this.addEvents();
         this.animate();
