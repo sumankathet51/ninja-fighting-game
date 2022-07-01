@@ -12,3 +12,8 @@ h1 {
     font-family: "Bangers", cursive;
     letter-spacing: 10px;
 }
+
+ul>li {
+    list-style: none;
+    padding: 1rem;
+}

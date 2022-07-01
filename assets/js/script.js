@@ -1,4 +1,5 @@
 import {
+    bgPositions,
     canvas,
     context,
     OBSTACLE_CONTAINER,
@@ -8,41 +9,14 @@ import {
 import { MapEditor } from "./levelEditor.js";
 import { Level1 } from "./levels/level1.js";
 import { Level2 } from "./levels/level2.js";
-import Vector from "./vector.js";
 
 const bgAnimation = document.querySelector(".ninja-animation");
 const startScreen = document.querySelector(".startUpScreen");
-const bgPositions = [
-    new Vector({ x: 1330, y: 2771 }),
-    new Vector({ x: 513, y: 2742 }),
-    new Vector({ x: 101, y: 2721 }),
-    new Vector({ x: 910, y: 2691 }),
-    new Vector({ x: 2594, y: 2265 }),
-    new Vector({ x: 2567, y: 1883 }),
-    new Vector({ x: 2610, y: 1057 }),
-    new Vector({ x: 2606, y: 1447 }),
-    new Vector({ x: 2184, y: 1449 }),
-    new Vector({ x: 2574, y: 627 }),
-    new Vector({ x: 2590, y: 217 }),
-    new Vector({ x: 2184, y: 2267 }),
-    new Vector({ x: 1786, y: 2267 }),
-    new Vector({ x: 1360, y: 2267 }),
-    new Vector({ x: 954, y: 2267 }),
-    new Vector({ x: 546, y: 2267 }),
-    new Vector({ x: 954, y: 2267 }),
-    new Vector({ x: 2185, y: 1037 }),
-    new Vector({ x: 2185, y: 627 }),
-    new Vector({ x: 2183, y: 217 }),
-    new Vector({ x: 2185, y: 627 }),
-    new Vector({ x: 979, y: 1857 }),
-    new Vector({ x: 551, y: 1857 }),
-    new Vector({ x: 134, y: 1862 }),
-    new Vector({ x: 1757, y: 1480 }),
-    new Vector({ x: 115, y: 1485 }),
-    new Vector({ x: 1790, y: 1063 }),
-];
+const playerControls = document.querySelectorAll(".player-controls");
+
 let counter = 0;
 let add = true;
+let settingsOPen = false;
 let game;
 
 let mapEditor = new MapEditor(canvas, context);
@@ -137,4 +111,18 @@ document.querySelector(".menu").addEventListener("click", () => {
 document.getElementById("new-game").addEventListener("click", () => {
     WINNER_CONTAINER.style.display = "none";
     game = new Level2();
+});
+
+document.querySelector(".settings__icon").addEventListener("click", () => {
+    if (settingsOPen) {
+        settingsOPen = false;
+        playerControls.forEach((control) => {
+            control.style.opacity = "1";
+        });
+    } else {
+        settingsOPen = true;
+        playerControls.forEach((control) => {
+            control.style.opacity = "0";
+        });
+    }
 });

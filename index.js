@@ -34,12 +34,12 @@ app.get("/api/game/", async(req, res) => {
 
 app.post("/api/game/store", async(req, res) => {
     const data = req.body;
-    console.log(data.name);
+    console.log(data);
     Map.add({
         name: data.name,
         obstacles: data.obstacles,
     });
-    res.send({ msg: "success" });
+    res.send({ msg: "success", data: data });
 });
 
 app.listen(3000);

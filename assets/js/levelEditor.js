@@ -166,17 +166,17 @@ export class MapEditor {
     };
 
     createLevel = () => {
-        let obData = JSON.stringify(this.obstacles);
-        console.log(obData);
-        fetch("http://localhost:3000/api/game/store", {
+        // let obData = JSON.stringify(this.obstacles);
+        // console.log(obData);
+        fetch("http://localhost:3000/api/game/store/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: {
+                body: JSON.stringify({
                     name: "Level",
-                    obstacles: obData,
-                },
+                    obstacles: this.obstacles,
+                }),
             })
             .then((response) => response.json())
             .then((data) => {

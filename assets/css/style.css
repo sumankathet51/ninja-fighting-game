@@ -16,6 +16,34 @@
     /* display: none; */
 }
 
+.settings {
+    z-index: 2;
+}
+
+.settings__icon {
+    height: 50px;
+    top: 20px;
+    right: 20px;
+    position: absolute;
+    transition: all 1s ease-in-out;
+    transition: transform 500ms ease-in-out;
+}
+
+.settings__icon:hover {
+    transform: rotate(180deg);
+    cursor: pointer;
+}
+
+.player-controls {
+    transition: opacity 1s ease-in-out;
+}
+
+.player-controls-container {
+    position: absolute;
+    right: 20px;
+    top: 100px;
+}
+
 .healthbar .healthbar__totalHealth {
     width: 27rem;
     background-color: red;
