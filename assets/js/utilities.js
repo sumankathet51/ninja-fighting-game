@@ -133,19 +133,19 @@ export function getMousePos(canvas, event) {
 }
 
 export function checkCollision(object1, object2) {
-    // console.log(
-    //     object1.position.x + object1.velocity.x <
-    //     object2.position.x + object2.width,
-    //     object1.position.x + object1.velocity.x + object1.width >
-    //     object2.position.x,
-    //     object1.position.y + object1.velocity.y < object2.position.y + 10,
-    //     object1.height + object1.position.y + object1.velocity.y >
-    //     object2.position.y
-    // );
+    console.log(
+        object1.position.x + object1.velocity.x <
+        object2.position.x + object2.width,
+        object1.position.x + object1.velocity.x + object1.width >
+        object2.position.x,
+        object1.position.y + object1.velocity.y < object2.position.y + 10,
+        object1.height + object1.position.y + object1.velocity.y >
+        object2.position.y
+    );
     if (
         object1.position.x < object2.position.x + object2.width &&
         object1.position.x + object1.width > object2.position.x &&
-        object1.position.y + object1.height < object2.position.y + 20 &&
+        object1.position.y + object1.height < object2.position.y + object2.height &&
         object1.height + object1.position.y > object2.position.y
     ) {
         // console.log("Collision");

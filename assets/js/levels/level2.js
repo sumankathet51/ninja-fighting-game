@@ -72,9 +72,27 @@ export class Level2 extends Game {
             false,
             true
         );
+        // this.player3 = new Character(
+        //     new Vector({
+        //         x: 1024 - 400,
+        //         y: 100,
+        //     }),
+        //     new Vector({
+        //         x: 0,
+        //         y: 0,
+        //     }),
+        //     219,
+        //     127,
+        //     keys.character2,
+        //     characters.sundari,
+        //     false,
+        //     true
+        // );
+
         this.draw();
         this.player1.initialize();
         this.player2.initialize();
+        // this.player3.initialize();
         // this.initialize();
         this.addEvents();
         this.animate();
@@ -96,6 +114,13 @@ export class Level2 extends Game {
             this.player2.width,
             this.player2.height
         );
+
+        // context.clearRect(
+        //     this.player3.position.x,
+        //     this.player3.position.y,
+        //     this.player3.width,
+        //     this.player3.height
+        // );
         context.drawImage(this.bgImage, 0, 0);
 
         this.obstacles.forEach((obstacle) => {
@@ -143,6 +168,16 @@ export class Level2 extends Game {
             this.player2.checkObstacleCollision(currentObstacles);
         }
         this.player2.update();
+
+        // if (this.player3.isMoving) {
+        //     let currentObstacles = [];
+        //     currentObstacles = this.obstacles.filter(
+        //         (obstacle) =>
+        //         obstacle.isObstacle && calcDistance(this.player3, obstacle) < 200
+        //     );
+        //     this.player3.checkObstacleCollision(currentObstacles);
+        // }
+        // this.player3.update();
 
         if (
             this.player1.isAttacking &&

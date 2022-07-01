@@ -5,11 +5,9 @@ import {
     TIMER,
     WINNER_CONTAINER,
 } from "./constants.js";
-import Game from "./game.js";
 import { MapEditor } from "./levelEditor.js";
 import { Level1 } from "./levels/level1.js";
 import { Level2 } from "./levels/level2.js";
-import { Obstacle } from "./obstacle.js";
 import Vector from "./vector.js";
 
 const bgAnimation = document.querySelector(".ninja-animation");
@@ -74,8 +72,8 @@ startButtons.forEach((startButton) => {
             if (this.dataset.mode === "singlePlayer") {
                 OBSTACLE_CONTAINER.style.display = "none";
                 TIMER.style.display = "block";
-                // game = new Level1(true);
-                game = new Level2();
+                game = new Level1(true);
+                // game = new Level2();
                 game.start();
             } else if (this.dataset.mode === "multiPlayer") {
                 OBSTACLE_CONTAINER.style.display = "none";

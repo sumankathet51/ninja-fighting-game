@@ -134,6 +134,36 @@ export const characters = {
             new Vector({ x: 400, y: 336 }),
         ],
     },
+    // sundari: {
+    //     stand: new Image(),
+    //     walk: new Image(),
+    //     hit: new Image(),
+    //     attack: new Image(),
+    //     dead: new Image(),
+    //     positions: [
+    //         new Vector({ x: 13, y: 11 }),
+    //         new Vector({ x: 175, y: 10 }),
+    //         new Vector({ x: 448, y: 16 }),
+    //         new Vector({ x: 12, y: 185 }),
+    //         new Vector({ x: 173, y: 188 }),
+    //         new Vector({ x: 326, y: 190 }),
+    //         new Vector({ x: 489, y: 190 }),
+    //         new Vector({ x: 7, y: 363 }),
+    //         new Vector({ x: 175, y: 361 }),
+    //     ],
+
+    //     deadPositions: [
+    //         new Vector({ x: 8, y: 10 }),
+    //         new Vector({ x: 171, y: 22 }),
+    //         new Vector({ x: 429, y: 31 }),
+    //         new Vector({ x: 9, y: 239 }),
+    //         new Vector({ x: 171, y: 238 }),
+    //         new Vector({ x: 335, y: 231 }),
+    //         new Vector({ x: 499, y: 213 }),
+    //         new Vector({ x: 11, y: 403 }),
+    //         new Vector({ x: 171, y: 405 }),
+    //     ],
+    // },
 };
 
 characters.ninja.stand.src = "./images/ninja/ninja_stand.png";
@@ -141,6 +171,12 @@ characters.ninja.walk.src = "./images/ninja/ninja_run.png";
 characters.ninja.hit.src = "./images/ninja/ninja_hit.png";
 characters.ninja.attack.src = "./images/ninja/ninja_attack.png";
 characters.ninja.dead.src = "./images/ninja/ninja_dead.png";
+
+// characters.sundari.stand.src = "./images/sundari/ninja_stand.png";
+// characters.sundari.walk.src = "./images/sundari/ninja_run.png";
+// characters.sundari.hit.src = "./images/sundari/ninja_hit.png";
+// characters.sundari.attack.src = "./images/sundari/ninja_attack.png";
+// characters.sundari.dead.src = "./images/sundari/ninja_dead.png";
 
 characters.pandu.stand.src = "./images/pandu/ninja_stand.png";
 characters.pandu.walk.src = "./images/pandu/ninja_run.png";
